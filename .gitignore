@@ -17,7 +17,9 @@ target/
 *.ipr
 mvnw
 *.cmd
+.mvn
 out/
+*.gitignore
 
 ### NetBeans ###
 nbproject/private/
