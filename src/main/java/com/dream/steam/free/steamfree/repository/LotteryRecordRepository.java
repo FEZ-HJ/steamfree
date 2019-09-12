@@ -14,6 +14,12 @@ public interface LotteryRecordRepository extends JpaRepository<LotteryRecord,Str
 
     List<LotteryRecord> findAllByUidOrderByTimeDesc(Pageable pageable,Long uid);
 
-    LotteryRecord findByOpenIdAndUid(String openId,Long uid);
+    LotteryRecord findById(Long id);
+
+    int countAllById(Long id);
+
+    int deleteById(Long id);
+
+    int deleteAllByUid(Long id);
 
 }

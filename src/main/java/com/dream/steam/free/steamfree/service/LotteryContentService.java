@@ -5,7 +5,9 @@ import com.dream.steam.free.steamfree.repository.LotteryContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,5 +32,15 @@ public class LotteryContentService {
 
     public LotteryContent insert(LotteryContent lotteryContent){
         return repository.save(lotteryContent);
+    }
+
+    public int count(){
+        return repository.countAllBy();
+    }
+
+    @Modifying
+    @Transactional
+    public int delete(Long id){
+        return repository.deleteById(id);
     }
 }

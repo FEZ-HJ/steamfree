@@ -5,7 +5,9 @@ import com.dream.steam.free.steamfree.repository.LotteryRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,5 +33,25 @@ public class LotteryRecordService {
     public List<LotteryRecord> findAll(int page,int size,Long uid){
         Pageable pageable = PageRequest.of(page,size);
         return repository.findAllByUidOrderByTimeDesc(pageable,uid);
+    }
+
+    public int count(Long id){
+        return repository.countAllById(id);
+    }
+
+    @Modifying
+    @Transactional
+    public int deleteById(Long id){
+        return repository.deleteById(id);
+    }
+
+    @Modifying
+    @Transactional
+    public int deleteAllByUid(Long id){
+        return repository.deleteAllByUid(id);
+    }
+
+    public LotteryRecord findById(Long id){
+        return repository.findById(id);
     }
 }

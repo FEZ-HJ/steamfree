@@ -13,6 +13,7 @@
 </head>
 <body>
 
+<input type="hidden" th:value="${id}" id="id">
 <div class="layui-card layadmin-header">
     <div class="layui-breadcrumb" lay-filter="breadcrumb">
         <a lay-href="">主页</a>
@@ -21,12 +22,11 @@
         <a><cite>开启分页</cite></a>
     </div>
 </div>
-
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">限免游戏</div>
+                <div class="layui-card-header">抽奖详情</div>
                 <div class="layui-card-body">
                     <table class="layui-hide" id="test-table-page" lay-filter="test-table-page"></table>
                 </div>
@@ -52,11 +52,11 @@
     function add(){
         layer.open({
             type: 2 //此处以iframe举例
-            ,title: '添加新限免'
+            ,title: '添加奖品'
             ,area: ['1500px', '750px']
             ,shade: 0
             ,maxmin: true
-            ,content: '/console/freeGameAdd?id=0'
+            ,content: '/console/lotteryRecordAdd?id=0&uid='+$("#id").val()
             ,btn: ['全部关闭'] //只是为了演示
             ,btn2: function(){
                 layer.closeAll();
@@ -68,28 +68,24 @@
         base: '/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table'], function(){
+    }).use(['index', 'table','element'], function(){
+        var $ = layui.jquery;
         var admin = layui.admin
             ,table = layui.table;
+
 
         table.render({
             elem: '#test-table-page'
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
-            ,url: '/freeGame/findAll'
+            ,url: '/lottery/record?id='+$("#id").val()
             ,cols: [[
                 {field:'id', title: 'ID', sort: true}
-                ,{field:'chineseName', title: '中文名称'}
-                ,{field:'englishName', title: '英文名称'}
-                ,{field:'assess', title: '最近评价'}
-                ,{field:'allAssess', title: '全部评价'}
-                ,{field:'factory',  title: '厂商'}
-                ,{field:'language',  title: '语言'}
-                ,{field:'newPrice', title: '现价'}
-                ,{field:'price',  title: '原价'}
-                ,{field:'saleDate', title: '发售日期'}
-                ,{field:'tag',  title: '标签'}
-                ,{field:'type',  title: '结束时间'}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                ,{field:'uid', title: '奖品ID'}
+                ,{field:'openId', title: '用户ID'}
+                ,{field:'avatarUrl', title: '用户头像'}
+                ,{field:'nickName',  title: '用户昵称'}
+                ,{field:'time', title: '抽奖次数'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:180}
             ]]
             ,page: true
         });
@@ -100,7 +96,7 @@
             if(obj.event === 'del'){
                 layer.confirm('真的删除行么', function(index){
                     $.ajax({
-                        url:'/freeGame/delete',
+                        url:'/lottery/deleteRecord',
                         type:'delete',
                         data: {
                             id: data.id
@@ -114,11 +110,11 @@
             } else if(obj.event === 'edit'){
                 layer.open({
                     type: 2 //此处以iframe举例
-                    ,title: '添加新限免'
+                    ,title: '抽奖详情'
                     ,area: ['1500px', '750px']
                     ,shade: 0
                     ,maxmin: true
-                    ,content: '/console/freeGameAdd?id='+data.id
+                    ,content: '/console/lotteryRecordAdd?id='+data.id+ '&uid='+$("#id").val()
                     ,btn: ['全部关闭'] //只是为了演示
                     ,btn2: function(){
                         layer.closeAll();

@@ -1,7 +1,12 @@
 package com.dream.steam.free.steamfree.controller;
 
 import com.dream.steam.free.steamfree.dto.FreeGameDTO;
+import com.dream.steam.free.steamfree.dto.LotteryDTO;
+import com.dream.steam.free.steamfree.entity.LotteryContent;
+import com.dream.steam.free.steamfree.entity.LotteryRecord;
 import com.dream.steam.free.steamfree.service.FreeGameService;
+import com.dream.steam.free.steamfree.service.LotteryContentService;
+import com.dream.steam.free.steamfree.service.LotteryRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +24,12 @@ public class ConsoleController {
     @Autowired
     private FreeGameService freeGameService;
 
+    @Autowired
+    private LotteryContentService lotteryContentService;
+
+    @Autowired
+    private LotteryRecordService lotteryRecordService;
+
     @RequestMapping("index")
     public String index(){
         return "index";
@@ -30,9 +41,46 @@ public class ConsoleController {
     }
 
     @RequestMapping("freeGameAdd")
-    public String freeGameAdd(Long id, Model model){
-        FreeGameDTO freeGameDTO = freeGameService.findById(id);
-        model.addAttribute("freeGameDTO",freeGameDTO);
+    public String freeGameAdd(Long id,Model model){
+        if(id != 0){
+            FreeGameDTO freeGameDTO = freeGameService.findById(id);
+            model.addAttribute("freeGameDTO",freeGameDTO);
+        }
         return "freeSteam/freeGameAdd";
+    }
+
+    @RequestMapping("lottery")
+    public String lottery(){
+        return "freeSteam/lotteryContent";
+    }
+
+    @RequestMapping("lotteryAdd")
+    public String lotteryAdd(Long id,Model model){
+        if(id != 0){
+            LotteryContent lotteryContent = lotteryContentService.findById(id);
+            model.addAttribute("lotteryContent",lotteryContent);
+        }
+        return "freeSteam/lotteryContentAdd";
+    }
+
+    @RequestMapping("lotteryRecord")
+    public String lotteryRecord(Long id,Model model){
+        model.addAttribute("id",id);
+        return "freeSteam/lotteryRecord";
+    }
+
+    @RequestMapping("lotteryRecordAdd")
+    public String lotteryRecordAdd(Long id,Model model,Long uid){
+        if(id != 0){
+            LotteryRecord lotteryRecord = lotteryRecordService.findById(id);
+            model.addAttribute("lotteryRecord",lotteryRecord);
+        }
+        model.addAttribute("uid",uid);
+        return "freeSteam/lotteryRecordAdd";
+    }
+
+    @RequestMapping("signIn")
+    public String signIn(){
+        return "freeSteam/signIn";
     }
 }

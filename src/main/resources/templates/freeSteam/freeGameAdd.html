@@ -20,14 +20,16 @@
         <div class="layui-inline">
             <label class="layui-form-label">中文名称</label>
             <div class="layui-input-inline">
-                <input type="tel" name="id" th:value="${freeGameDTO.id}" hidden autocomplete="off">
-                <input type="tel" name="chineseName" th:value="${freeGameDTO.chineseName}" autocomplete="off" class="layui-input">
+                <input type="tel" name="id" th:if="${freeGameDTO != null}" th:value="${freeGameDTO.id}" hidden autocomplete="off">
+                <input type="tel" name="chineseName" th:if="${freeGameDTO != null}" th:value="${freeGameDTO.chineseName}" autocomplete="off" class="layui-input">
+                <input type="tel" name="chineseName" th:if="${freeGameDTO == null}" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">英文名称</label>
             <div class="layui-input-inline">
-                <input type="text" name="englishName" th:value="${freeGameDTO.englishName}" autocomplete="off" class="layui-input">
+                <input type="text" name="englishName" th:if="${freeGameDTO != null}" th:value="${freeGameDTO.englishName}" autocomplete="off" class="layui-input">
+                <input type="text" name="englishName" th:if="${freeGameDTO == null}" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -35,13 +37,15 @@
         <div class="layui-inline">
             <label class="layui-form-label">最近评价</label>
             <div class="layui-input-inline">
-                <input type="tel" name="assess" th:value="${freeGameDTO.assess}" autocomplete="off" class="layui-input">
+                <input type="tel" name="assess" th:if="${freeGameDTO != null}" th:value="${freeGameDTO.assess}" autocomplete="off" class="layui-input">
+                <input type="tel" name="assess" th:if="${freeGameDTO == null}" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">全部评价</label>
             <div class="layui-input-inline">
-                <input type="text" name="allAssess" th:value="${freeGameDTO.allAssess}" autocomplete="off" class="layui-input">
+                <input type="text" name="allAssess" th:if="${freeGameDTO != null}" th:value="${freeGameDTO.allAssess}" autocomplete="off" class="layui-input">
+                <input type="text" name="allAssess" th:if="${freeGameDTO == null}" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -49,13 +53,15 @@
         <div class="layui-inline">
             <label class="layui-form-label">发售日期</label>
             <div class="layui-input-inline">
-                <input type="tel" name="saleDate" th:value="${freeGameDTO.saleDate}" autocomplete="off" class="layui-input">
+                <input type="tel" name="saleDate" th:if="${freeGameDTO != null}" th:value="${freeGameDTO.saleDate}" autocomplete="off" class="layui-input">
+                <input type="tel" name="saleDate" th:if="${freeGameDTO == null}" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">结束时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="type" th:value="${freeGameDTO.type[0]}" autocomplete="off" class="layui-input">
+                <input type="text" name="type" th:if="${freeGameDTO != null}" th:value="${freeGameDTO.type[0]}" autocomplete="off" class="layui-input">
+                <input type="text" name="type" th:if="${freeGameDTO == null}" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -64,7 +70,8 @@
             <label class="layui-form-label">厂商</label>
             <div class="layui-input-inline">
                 <select name="factory" lay-verify="required" lay-search="">
-                    <option th:value="${freeGameDTO.factory}">[[${freeGameDTO.factory}]]</option>
+                    <option th:if="${freeGameDTO != null}" th:value="${freeGameDTO.factory}">[[${freeGameDTO.factory}]]</option>
+                    <option th:if="${freeGameDTO == null}" value=""></option>
                     <option value="Epic">Epic</option>
                     <option value="Steam">Steam</option>
                     <option value="Origin">Origin</option>
@@ -77,7 +84,8 @@
             <label class="layui-form-label">语言</label>
             <div class="layui-input-inline">
                 <select name="language" lay-verify="required" lay-search="">
-                    <option th:value="${freeGameDTO.language}">[[${freeGameDTO.language}]]</option>
+                    <option th:if="${freeGameDTO != null}" th:value="${freeGameDTO.language}">[[${freeGameDTO.language}]]</option>
+                    <option th:if="${freeGameDTO == null}" value=""></option>
                     <option value="简体中文">简体中文</option>
                     <option value="繁体中文">繁体中文</option>
                     <option value="无中文">无中文</option>
@@ -89,13 +97,15 @@
         <div class="layui-inline">
             <label class="layui-form-label">现价</label>
             <div class="layui-input-inline">
-                <input th:value="${freeGameDTO.newPrice}" name="newPrice" autocomplete="off" class="layui-input">
+                <input th:if="${freeGameDTO != null}" th:value="${freeGameDTO.newPrice}" name="newPrice" autocomplete="off" class="layui-input">
+                <input th:if="${freeGameDTO == null}" name="newPrice" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">原价</label>
             <div class="layui-input-inline">
-                <input th:value="${freeGameDTO.price}" type="text" name="price" autocomplete="off" class="layui-input">
+                <input th:if="${freeGameDTO != null}" th:value="${freeGameDTO.price}" type="text" name="price" autocomplete="off" class="layui-input">
+                <input th:if="${freeGameDTO == null}" type="text" name="price" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -103,54 +113,63 @@
         <div class="layui-inline">
             <label class="layui-form-label">标签</label>
             <div class="layui-input-inline">
-                <input type="tel" name="tag[]" th:value="${freeGameDTO.tag[0]}" autocomplete="off" class="layui-input">
+                <input type="tel" name="tag[]" th:if="${freeGameDTO != null}" th:value="${freeGameDTO.tag[0]}" autocomplete="off" class="layui-input">
+                <input type="tel" name="tag[]" th:if="${freeGameDTO == null}" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <div class="layui-input-inline">
-                <input type="text" name="tag[]" th:value="${freeGameDTO.tag[1]}" autocomplete="off" class="layui-input">
+            <div class="layui-input-inline" th:switch ="${freeGameDTO != null and #lists.size(freeGameDTO.tag) gt 1}">
+                <input type="text" name="tag[]" th:case="true" th:value="${freeGameDTO.tag[1]}" autocomplete="off" class="layui-input">
+                <input type="text" name="tag[]" th:case="false" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <div class="layui-input-inline">
-                <input type="text" name="tag[]" th:value="${freeGameDTO.tag[2]}" autocomplete="off" class="layui-input">
+            <div class="layui-input-inline" th:switch = "${freeGameDTO != null and #lists.size(freeGameDTO.tag) gt 2 }">
+                <input type="text" name="tag[]" th:case="true" th:value="${freeGameDTO.tag[2]}" autocomplete="off" class="layui-input">
+                <input type="text" name="tag[]" th:case="false"  autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">首页图片</label>
         <div class="layui-input-block">
-            <input type="text" name="rowImage" th:value="${freeGameDTO.rowImage}" autocomplete="off" class="layui-input">
+            <input type="text" name="rowImage" th:if="${freeGameDTO != null}" th:value="${freeGameDTO.rowImage}" autocomplete="off" class="layui-input">
+            <input type="text" name="rowImage" th:if="${freeGameDTO == null}" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">轮播图</label>
         <div class="layui-input-block">
-            <input type="text" name="images[]" th:value="${freeGameDTO.images[0]}" autocomplete="off" class="layui-input">
+            <input type="text" name="images[]" th:if="${freeGameDTO != null}" th:value="${freeGameDTO.images[0]}" autocomplete="off" class="layui-input">
+            <input type="text" name="images[]" th:if="${freeGameDTO == null}" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label"></label>
-        <div class="layui-input-block">
-            <input type="text" name="images[]" th:value="${freeGameDTO.images[1]}" autocomplete="off" class="layui-input">
+        <div class="layui-input-block" th:switch = "${freeGameDTO != null and #lists.size(freeGameDTO.images) gt 1}">
+            <input type="text" name="images[]" th:case="true" th:value="${freeGameDTO.images[1]}" autocomplete="off" class="layui-input">
+            <input type="text" name="images[]" th:case="false"  autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label"></label>
-        <div class="layui-input-block">
-            <input type="text" name="images[]" th:value="${freeGameDTO.images[2]}" autocomplete="off" class="layui-input">
+        <div class="layui-input-block" th:switch = "${freeGameDTO != null and #lists.size(freeGameDTO.images) gt 2}">
+            <input type="text" name="images[]" th:case="true" th:value="${freeGameDTO.images[2]}" autocomplete="off" class="layui-input">
+            <input type="text" name="images[]" th:case="false"  autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label"></label>
-        <div class="layui-input-block">
-            <input type="text" name="images[]" th:value="${freeGameDTO.images[3]}" autocomplete="off" class="layui-input">
+        <div class="layui-input-block" th:switch = "${freeGameDTO != null and #lists.size(freeGameDTO.images) gt 3}">
+            <input type="text" name="images[]" th:case="true" th:value="${freeGameDTO.images[3]}" autocomplete="off" class="layui-input">
+            <input type="text" name="images[]" th:case="false"  autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">描述</label>
         <div class="layui-input-block">
-            <textarea name="content" th:text="${freeGameDTO.content}" class="layui-textarea"></textarea>
+            <textarea name="content" th:if="${freeGameDTO != null}" th:text="${freeGameDTO.content}" class="layui-textarea"></textarea>
+            <textarea name="content" th:if="${freeGameDTO == null}" class="layui-textarea"></textarea>
         </div>
     </div>
     <div class="layui-form-item">
@@ -184,26 +203,6 @@
             })
             return false;
         });
-
-        //表单赋值
-        layui.$('#LAY-component-form-setval').on('click', function(){
-            form.val('example', {
-                "username": "贤心" // "name": "value"
-                ,"password": "123456"
-                ,"interest": 1
-                ,"like[write]": true //复选框选中状态
-                ,"close": true //开关状态
-                ,"sex": "女"
-                ,"desc": "我爱 layui"
-            });
-        });
-
-        //表单取值
-        layui.$('#LAY-component-form-getval').on('click', function(){
-            var data = form.val('example');
-            alert(JSON.stringify(data));
-        });
-
     });
 </script>
 
