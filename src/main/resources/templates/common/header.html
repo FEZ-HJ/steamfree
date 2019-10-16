@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <header th:fragment="common">
+        <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+        <link rel="stylesheet" th:href="@{/style/admin.css}" media="all">
+        <script th:src="@{/layui/layui.js}"></script>
+        <script th:src="@{/jquery-3.4.1.min.js}"></script>
+        <script type="text/javascript" th:inline="javascript">
+            /*<![CDATA[*/
+            var ctxPath = /*[[@{/}]]*/ '';
+            /*]]>*/
+            console.info(ctxPath);
+        </script>　
+    </header>
+</body>
+</html>
