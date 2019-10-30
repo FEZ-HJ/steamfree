@@ -27,6 +27,9 @@ public class LotteryController {
     @Autowired
     private LotteryRecordService recordService;
 
+    /**
+     * 抽奖页信息 抽奖信息 抽奖记录
+     */
     @GetMapping("index")
     public LotteryDTO index(Long id){
         LotteryDTO lotteryDTO = new LotteryDTO();
@@ -37,17 +40,28 @@ public class LotteryController {
         return lotteryDTO;
     }
 
+    /**
+     * 保存抽奖记录
+     * @return 所有用户的抽奖记录
+     */
     @PostMapping("saveRecord")
     public List<LotteryRecord> saveRecord(LotteryRecord lotteryRecord){
         recordService.insert(lotteryRecord);
         return recordService.findAll(0,100,lotteryRecord.getUid());
     }
 
+    /**
+     * 保存奖品信息
+     * @return 奖品信息
+     */
     @PostMapping("saveContent")
     public LotteryContent saveContent(LotteryContent lotteryContent){
         return contentService.insert(lotteryContent);
     }
 
+    /**
+     * layui查询奖品信息接口
+     */
     @GetMapping("content")
     public Map<String,Object> content(int page, int limit){
         List<LotteryContent> list = contentService.findAll(page - 1,limit);
@@ -55,6 +69,9 @@ public class LotteryController {
         return ReturnJson.RETURN("成功",list,count,0);
     }
 
+    /**
+     * 删除奖品
+     */
     @DeleteMapping("deleteContent")
     @Transactional
     public int deleteContent(Long id){
@@ -62,11 +79,17 @@ public class LotteryController {
         return contentService.delete(id);
     }
 
+    /**
+     * 删除抽奖记录
+     */
     @DeleteMapping("deleteRecord")
     public int deleteRecord(Long id){
         return recordService.deleteById(id);
     }
 
+    /**
+     * layui抽奖记录查询接口
+     */
     @GetMapping("record")
     public Map<String,Object> record(Long id,int page, int limit){
         List<LotteryRecord> list = recordService.findAll(page - 1,limit,id);
@@ -74,4 +97,11 @@ public class LotteryController {
         return ReturnJson.RETURN("成功",list,count,0);
     }
 
+    /**
+     * 查询正在进行的抽奖
+     */
+    @GetMapping("findUnderway")
+    public List<LotteryContent> findUnderway(){
+        return contentService.findUnderway();
+    }
 }

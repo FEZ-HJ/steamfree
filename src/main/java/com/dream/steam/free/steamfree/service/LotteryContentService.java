@@ -26,7 +26,7 @@ public class LotteryContentService {
     }
 
     public List<LotteryContent> findAll(int page , int size){
-        Pageable pageable = PageRequest.of(0,20);
+        Pageable pageable = PageRequest.of(page,size);
         return repository.findAllByOrderByIdDesc(pageable);
     }
 
@@ -42,5 +42,9 @@ public class LotteryContentService {
     @Transactional
     public int delete(Long id){
         return repository.deleteById(id);
+    }
+
+    public List<LotteryContent> findUnderway(){
+        return repository.findAllByOpenidOrderByIdDesc("");
     }
 }

@@ -19,4 +19,6 @@ public interface LotteryContentRepository extends JpaRepository<LotteryContent,S
     int countAllBy();
 
     int deleteById(Long s);
+
+    List<LotteryContent> findAllByOpenidOrderByIdDesc(String openid);
 }

@@ -24,7 +24,7 @@ public class LotteryContent {
     private String description;
     private String img;
 
-//    中间信息
+//    中奖信息
     private String avatarUrl;
     private String openid;
     private String nickName;
