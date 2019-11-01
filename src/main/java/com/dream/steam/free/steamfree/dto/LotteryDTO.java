@@ -16,4 +16,6 @@ public class LotteryDTO {
     List<LotteryRecord> records;
 
     LotteryContent lotteryContent;
+
+    LotteryRecord myRecord;
 }

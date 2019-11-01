@@ -45,9 +45,14 @@ public class LotteryController {
      * @return 所有用户的抽奖记录
      */
     @PostMapping("saveRecord")
-    public List<LotteryRecord> saveRecord(LotteryRecord lotteryRecord){
+    public LotteryDTO saveRecord(@RequestBody LotteryRecord lotteryRecord){
         recordService.insert(lotteryRecord);
-        return recordService.findAll(0,100,lotteryRecord.getUid());
+        LotteryDTO lotteryDTO = new LotteryDTO();
+        List<LotteryRecord> records = recordService.findAll(0,100,lotteryRecord.getUid());
+        LotteryRecord myRecord = recordService.findByOpenIdAndUid(lotteryRecord.getOpenId(),lotteryRecord.getUid());
+        lotteryDTO.setRecords(records);
+        lotteryDTO.setMyRecord(myRecord);
+        return lotteryDTO;
     }
 
     /**
@@ -55,7 +60,7 @@ public class LotteryController {
      * @return 奖品信息
      */
     @PostMapping("saveContent")
-    public LotteryContent saveContent(LotteryContent lotteryContent){
+    public LotteryContent saveContent(@RequestBody LotteryContent lotteryContent){
         return contentService.insert(lotteryContent);
     }
 
@@ -103,5 +108,21 @@ public class LotteryController {
     @GetMapping("findUnderway")
     public List<LotteryContent> findUnderway(){
         return contentService.findUnderway();
+    }
+
+    /**
+     * 查询用户在某奖品下的抽奖情况
+     */
+    @GetMapping("findByOpenIdAndUid")
+    public LotteryRecord findByOpenIdAndUid(String openId,Long id){
+        return recordService.findByOpenIdAndUid(openId,id);
+    }
+
+    /**
+     * 查询所有抽奖信息
+     */
+    @GetMapping("findAllContent")
+    public List<LotteryContent> findAllContent(int page,int size){
+        return contentService.findAll(page,size);
     }
 }

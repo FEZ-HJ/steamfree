@@ -23,9 +23,13 @@ public class LotteryRecordService {
 
     public LotteryRecord insert(LotteryRecord lotteryRecord){
         if(lotteryRecord.getId() == null){
-            lotteryRecord.setTime(1);
-        }else{
-            lotteryRecord.setTime(lotteryRecord.getTime() + 1);
+            LotteryRecord lotteryRecord1 = repository.findByOpenIdAndUid(lotteryRecord.getOpenId(),lotteryRecord.getUid());
+            if(lotteryRecord1 == null){
+                lotteryRecord.setTime(1);
+            }else{
+                lotteryRecord.setTime(lotteryRecord1.getTime()+1);
+                lotteryRecord.setId(lotteryRecord1.getId());
+            }
         }
         return repository.save(lotteryRecord);
     }
@@ -53,5 +57,9 @@ public class LotteryRecordService {
 
     public LotteryRecord findById(Long id){
         return repository.findById(id);
+    }
+
+    public LotteryRecord findByOpenIdAndUid(String openId,Long uid){
+        return repository.findByOpenIdAndUid(openId,uid);
     }
 }

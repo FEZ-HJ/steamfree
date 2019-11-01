@@ -14,7 +14,7 @@ import javax.persistence.Id;
 public class User {
 
     @Id
-    private String en;
+    private String openId;
 
     private String avatarUrl;
 

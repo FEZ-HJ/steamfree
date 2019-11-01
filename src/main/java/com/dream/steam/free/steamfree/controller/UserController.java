@@ -2,16 +2,8 @@ package com.dream.steam.free.steamfree.controller;
 
 import com.dream.steam.free.steamfree.entity.User;
 import com.dream.steam.free.steamfree.service.UserService;
-import com.dream.steam.free.steamfree.utils.HTTPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by H.J
@@ -25,7 +17,7 @@ public class UserController {
     private UserService service;
 
     @PostMapping("insert")
-    public User insert(User user) {
+    public User insert(@RequestBody User user) {
         return service.insert(user);
     }
 }

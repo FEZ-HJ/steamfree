@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface LotteryRecordRepository extends JpaRepository<LotteryRecord,String> {
 
+    LotteryRecord findByOpenIdAndUid(String openId,Long uid);
+
     List<LotteryRecord> findAllByUidOrderByTimeDesc(Pageable pageable,Long uid);
 
     LotteryRecord findById(Long id);
