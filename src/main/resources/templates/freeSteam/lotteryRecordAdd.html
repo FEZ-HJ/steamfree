@@ -71,7 +71,9 @@
             $.ajax({
                 url: ctxPath + 'lottery/saveRecord',
                 type: 'post',
-                data: data.field,
+                data: JSON.stringify(data.field),
+                dataType: "json",
+                contentType : "application/json",
                 success: function () {
                     parent.layui.table.reload('test-table-page', {});
                     parent.layer.closeAll();

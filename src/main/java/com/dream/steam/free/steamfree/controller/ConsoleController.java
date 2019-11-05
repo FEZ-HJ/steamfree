@@ -30,9 +30,9 @@ public class ConsoleController {
     @Autowired
     private LotteryRecordService lotteryRecordService;
 
-    @RequestMapping("index")
-    public String index(){
-        return "index";
+    @RequestMapping("console")
+    public String console(){
+        return "freeSteam/console";
     }
 
     @RequestMapping("freeGame")

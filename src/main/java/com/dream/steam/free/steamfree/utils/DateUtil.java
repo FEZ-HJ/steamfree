@@ -2,6 +2,7 @@ package com.dream.steam.free.steamfree.utils;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,13 +41,18 @@ public class DateUtil {
         return formatDate;
     }
 
-    public static String getDateBefore(int day){
-        Date date=new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(calendar.DATE, day);
-        date = calendar.getTime();
+    public static String getDateBefore(String date,int day){
         SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(date);
+        Date date1 = null;
+        try {
+            date1 = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date1);
+        calendar.add(calendar.DATE, day);
+        date1 = calendar.getTime();
+        return format.format(date1);
     }
 }

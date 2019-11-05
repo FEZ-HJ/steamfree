@@ -33,13 +33,14 @@ public class SignInRecordService {
     public SignInRecord save(String openId){
 //        今天的签到情况
         SignInRecord isSignIn = signInRecordRepository.findByOpenIdAndData(openId, DateUtil.getDate());
-//        昨天的签到情况
-        SignInRecord previousSignIn = signInRecordRepository.findByOpenIdAndData(openId,DateUtil.getDateBefore(-1));
 
 //        今天已有签到记录，不签到
         if(isSignIn != null){
             return null;
         }
+
+//        昨天的签到情况
+        SignInRecord previousSignIn = signInRecordRepository.findByOpenIdAndData(openId,DateUtil.getDateBefore(DateUtil.getDate(),-1));
 
         SignInRecord signInRecord = new SignInRecord(openId,DateUtil.getDate());
 

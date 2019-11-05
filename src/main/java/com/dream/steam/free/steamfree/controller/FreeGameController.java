@@ -23,7 +23,7 @@ public class FreeGameController {
     private FreeGameService service;
 
     @PostMapping("insert")
-    public FreeGame insert(@RequestBody FreeGameDTO freeGameDTO){
+    public FreeGame insert(FreeGameDTO freeGameDTO){
         FreeGame freeGame = new FreeGame();
         BeanUtils.copyProperties(freeGameDTO,freeGame);
         freeGame.setTag(listToString(freeGameDTO.getTag(),','));

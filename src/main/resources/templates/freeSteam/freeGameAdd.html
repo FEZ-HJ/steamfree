@@ -97,7 +97,7 @@
             <label class="layui-form-label">现价</label>
             <div class="layui-input-inline">
                 <input th:if="${freeGameDTO != null}" th:value="${freeGameDTO.newPrice}" name="newPrice" autocomplete="off" class="layui-input">
-                <input th:if="${freeGameDTO == null}" name="newPrice" autocomplete="off" class="layui-input">
+                <input th:if="${freeGameDTO == null}" name="newPrice" autocomplete="off" value="0.00" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
