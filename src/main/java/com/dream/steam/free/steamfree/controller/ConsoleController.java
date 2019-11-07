@@ -1,7 +1,6 @@
 package com.dream.steam.free.steamfree.controller;
 
 import com.dream.steam.free.steamfree.dto.FreeGameDTO;
-import com.dream.steam.free.steamfree.dto.LotteryDTO;
 import com.dream.steam.free.steamfree.entity.LotteryContent;
 import com.dream.steam.free.steamfree.entity.LotteryRecord;
 import com.dream.steam.free.steamfree.service.FreeGameService;

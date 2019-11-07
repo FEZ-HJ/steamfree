@@ -33,4 +33,8 @@ public class PushFormService {
             return null;
         }
     }
+
+    public List<PushForm> findAllCanPush(){
+        return repository.findAllCanPush();
+    }
 }

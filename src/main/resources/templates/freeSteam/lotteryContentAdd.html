@@ -93,6 +93,7 @@
 
         //监听提交
         form.on('submit(demo1)', function(data){
+            layer.load(2);
             $.ajax({
                 url: ctxPath + 'lottery/saveContent',
                 type: 'post',

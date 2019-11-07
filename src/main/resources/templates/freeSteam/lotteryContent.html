@@ -42,6 +42,7 @@
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编 辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删 除</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="push">推 送</a>
 </script>
 
 <script type="text/html" id="barRecord">
@@ -104,6 +105,7 @@
                             id: data.id
                         },
                         success: function () {
+                            layer.msg('删除成功！');
                             table.reload('test-table-page', {});
                         }
                     })
@@ -121,6 +123,17 @@
                     ,btn2: function(){
                         layer.closeAll();
                     }
+                });
+            } else if(obj.event === 'push'){
+                layer.confirm('确认推送全部用户？', function(index){
+                    $.ajax({
+                        url:ctxPath + 'push/pushLottery?id='+data.id,
+                        type:'get',
+                        success: function () {
+                            layer.msg('推送成功');
+                        }
+                    })
+                    layer.close(index);
                 });
             }
         });
