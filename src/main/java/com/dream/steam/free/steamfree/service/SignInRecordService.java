@@ -1,5 +1,6 @@
 package com.dream.steam.free.steamfree.service;
 
+import com.dream.steam.free.steamfree.entity.OperationRecord;
 import com.dream.steam.free.steamfree.entity.SignInRecord;
 import com.dream.steam.free.steamfree.repository.SignInRecordRepository;
 import com.dream.steam.free.steamfree.utils.DateUtil;
@@ -18,6 +19,9 @@ public class SignInRecordService {
 
     @Autowired
     private SignInRecordRepository signInRecordRepository;
+
+    @Autowired
+    private OperationRecordService service;
 
 //    查询本月的签到记录
     public List<String> findList(String openId){
@@ -51,6 +55,8 @@ public class SignInRecordService {
         }else{
             signInRecord.setContinuous(1);
         }
+
+        service.save(new OperationRecord(openId,"签到"));
         return signInRecordRepository.save(signInRecord);
     }
 }

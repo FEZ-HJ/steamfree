@@ -1,6 +1,7 @@
 package com.dream.steam.free.steamfree.service;
 
 import com.dream.steam.free.steamfree.entity.LotteryRecord;
+import com.dream.steam.free.steamfree.entity.OperationRecord;
 import com.dream.steam.free.steamfree.repository.LotteryRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,9 @@ public class LotteryRecordService {
     @Autowired
     private LotteryRecordRepository repository;
 
+    @Autowired
+    private OperationRecordService service;
+
     public LotteryRecord insert(LotteryRecord lotteryRecord){
         if(lotteryRecord.getId() == null){
             LotteryRecord lotteryRecord1 = repository.findByOpenIdAndUid(lotteryRecord.getOpenId(),lotteryRecord.getUid());
@@ -31,6 +35,7 @@ public class LotteryRecordService {
                 lotteryRecord.setId(lotteryRecord1.getId());
             }
         }
+        service.save(new OperationRecord(lotteryRecord.getOpenId(),"参与抽奖："+lotteryRecord.getUid() ));
         return repository.save(lotteryRecord);
     }
 
