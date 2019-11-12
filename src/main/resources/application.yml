@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://116.62.185.83:3306/freesteam?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://116.62.185.83:3306/steamfree?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: dream
     password: llyscysykr008#
 
@@ -14,11 +14,14 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
 
 server:
   port: 80
   servlet:
-    context-path: /freesteam
+    context-path: /steamfree
 
 wx:
   appid : wxc78e9d02efadbba9

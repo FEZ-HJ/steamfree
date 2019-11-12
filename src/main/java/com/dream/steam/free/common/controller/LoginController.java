@@ -1,4 +1,4 @@
-package com.dream.steam.free.freesteam.controller;
+package com.dream.steam.free.common.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
