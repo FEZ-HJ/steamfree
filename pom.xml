@@ -71,7 +71,6 @@
             <artifactId>spring-social-web</artifactId>
             <version>1.1.4.RELEASE</version>
         </dependency>
-2.
     </dependencies>
 
     <build>
