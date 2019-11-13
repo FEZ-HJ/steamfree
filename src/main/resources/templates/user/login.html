@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>登录</title>
+  <link rel="Shortcut Icon" th:href="@{/style/res/header.ico}" type="image/x-icon" />
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -31,11 +32,11 @@
           <div class="layui-row">
             <div class="layui-col-xs7">
               <label class="layadmin-user-login-icon layui-icon layui-icon-vercode" for="LAY-user-login-vercode"></label>
-              <input type="text" name="vercode" id="LAY-user-login-vercode" lay-verify="required" placeholder="图形验证码" class="layui-input">
+              <input type="text" name="imageCode" id="LAY-user-login-vercode" lay-verify="required" placeholder="图形验证码" class="layui-input">
             </div>
             <div class="layui-col-xs5">
               <div style="margin-left: 10px;">
-                <img src="https://www.oschina.net/action/user/captcha" class="layadmin-user-login-codeimg" id="LAY-user-get-vercode">
+                <img src="code/image" class="layadmin-user-login-codeimg" id="LAY-user-get-vercode">
               </div>
             </div>
           </div>
@@ -100,6 +101,15 @@
           }, function(){
             location.href = ctxPath; //后台主页
           });
+        }
+        ,error: function (data) {
+          layer.msg(data.responseJSON, {
+            anim: 6,
+            icon: 5
+            ,time: 1000
+          },function () {
+            
+          })
         }
       });
       

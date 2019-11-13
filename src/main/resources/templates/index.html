@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>Steam限免助手</title>
   <meta name="renderer" content="webkit">
+  <link rel="Shortcut Icon" th:href="@{/style/res/header.ico}" type="image/x-icon" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 </head>
@@ -61,7 +62,7 @@
           </li>
           <li class="layui-nav-item" lay-unselect>
             <a href="javascript:;">
-              <cite>贤心</cite>
+              <cite th:text="${user.username}"></cite>
             </a>
             <dl class="layui-nav-child">
               <dd><a lay-href="set/user/info.html">基本资料</a></dd>
@@ -84,7 +85,7 @@
       <div class="layui-side layui-side-menu">
         <div class="layui-side-scroll">
           <div class="layui-logo" lay-href="console/console">
-            <span>layuiAdmin</span>
+            <span>StreamFree</span>
           </div>
           
           <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">

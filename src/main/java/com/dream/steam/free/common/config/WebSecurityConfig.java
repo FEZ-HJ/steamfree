@@ -1,5 +1,7 @@
 package com.dream.steam.free.common.config;
 
+import com.dream.steam.free.common.filter.AuthenticationFailureHandler;
+import com.dream.steam.free.common.filter.ValidateCodeFilter;
 import com.dream.steam.free.common.service.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,8 +11,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.sql.DataSource;
 
@@ -27,6 +31,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AdminUserService userService;
 
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
+
     @Bean
     BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -40,9 +47,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return tokenRepository;
     }
 
+//    @Bean
+//    public EmbeddedServletContainerCustomizer containerCustomizer(){
+//        return container -> {
+//            container.addErrorPages(new ErrorPage(HttpStatus.FORBIDDEN, "/error_403"));
+//            container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/error_404"));
+//            container.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/error"));
+//        };
+//    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+        validateCodeFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+
         http
+            .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
             .headers()
             .frameOptions()
             .sameOrigin()
@@ -55,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login/form")
-//                .failureUrl("/authentication/require")
+                .failureHandler(authenticationFailureHandler)
                 .permitAll()
             .and()
                 .rememberMe()
@@ -76,6 +96,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web){
         //解决静态资源被拦截的问题
         web.ignoring().antMatchers("/style/**","/layui/**","/lib/**","/modules/**","/config.js");
-        web.ignoring().antMatchers("/login","/freeGame/findAll","/freeGame/findById","/lottery/**","/signIn/**","/user/**");
+        web.ignoring().antMatchers("/login","/code/image","/freeGame/findAll","/freeGame/findById","/lottery/**","/signIn/**","/user/**");
     }
 }

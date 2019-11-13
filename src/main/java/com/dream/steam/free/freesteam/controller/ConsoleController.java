@@ -7,6 +7,8 @@ import com.dream.steam.free.freesteam.service.FreeGameService;
 import com.dream.steam.free.freesteam.service.LotteryContentService;
 import com.dream.steam.free.freesteam.service.LotteryRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("console")
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ConsoleController {
 
     @Autowired
@@ -34,6 +37,7 @@ public class ConsoleController {
         return "freeSteam/console";
     }
 
+    @PreAuthorize("hasRole('dream')")
     @RequestMapping("freeGame")
     public String freeGame(){
         return "freeSteam/freeGame";
