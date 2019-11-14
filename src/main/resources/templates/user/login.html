@@ -87,13 +87,14 @@
 
     //提交
     form.on('submit(LAY-user-login-submit)', function(obj){
-    
-      //请求登入接口
+      layer.load(2);
+        //请求登入接口
       $.ajax({
         url: ctxPath + 'login/form'
         ,type:'post'
         ,data: obj.field
         ,success: function(){
+          layer.closeAll('loading');
           // //登入成功的提示与跳转
           layer.msg('登入成功', {
             icon: 1
@@ -103,6 +104,7 @@
           });
         }
         ,error: function (data) {
+          layer.closeAll('loading');
           layer.msg(data.responseJSON, {
             anim: 6,
             icon: 5
