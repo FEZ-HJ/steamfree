@@ -37,7 +37,6 @@ public class ConsoleController {
         return "freeSteam/console";
     }
 
-    @PreAuthorize("hasRole('dream')")
     @RequestMapping("freeGame")
     public String freeGame(){
         return "freeSteam/freeGame";
