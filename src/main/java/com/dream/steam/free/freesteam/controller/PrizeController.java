@@ -3,7 +3,9 @@ package com.dream.steam.free.freesteam.controller;
 import com.dream.steam.free.freesteam.dto.ReturnJson;
 import com.dream.steam.free.freesteam.entity.LotteryContent;
 import com.dream.steam.free.freesteam.entity.PrizeContent;
+import com.dream.steam.free.freesteam.entity.PrizeRecord;
 import com.dream.steam.free.freesteam.service.PrizeContentService;
+import com.dream.steam.free.freesteam.service.PrizeRecordService;
 import com.dream.steam.free.freesteam.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,9 @@ public class PrizeController {
 
     @Autowired
     private PrizeContentService prizeContentService;
+
+    @Autowired
+    private PrizeRecordService prizeRecordService;
 
     /**
      * 保存奖品信息
@@ -66,9 +71,18 @@ public class PrizeController {
      * 查询本人抽奖信息
      * 查询全部抽奖信息
      */
-    @GetMapping("")
-    public void find(Long id){
-        PrizeContent prizeContent = prizeContentService.findById(id);
+    @GetMapping("prizeDetail")
+    public PrizeContent prizeDetail(Long id){
+        return prizeContentService.findById(id);
+    }
+
+    /**
+     * 保存抽奖记录
+     */
+    @PostMapping("insertRecord")
+    public PrizeRecord insertRecord(@RequestBody PrizeRecord prizeRecord){
+        prizeRecord.setModifyTime(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));
+        return prizeRecordService.insert(prizeRecord);
     }
 
 

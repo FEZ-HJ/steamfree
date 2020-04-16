@@ -28,7 +28,4 @@ public class PrizeRecord {
 //    最后抽奖的时间
     private String modifyTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prizeId")
-    private PrizeContent prizeContent;
 }

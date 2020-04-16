@@ -46,6 +46,4 @@ public class PrizeContent {
     @Column(name = "WINNERS")
     private String winners;
 
-    @OneToMany(cascade=CascadeType.ALL,mappedBy = "prizeContent")
-    List<PrizeRecord> recordList;
 }
