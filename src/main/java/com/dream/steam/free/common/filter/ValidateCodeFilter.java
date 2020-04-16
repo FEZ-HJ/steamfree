@@ -4,6 +4,7 @@ import com.dream.steam.free.common.controller.ValidateCodeController;
 import com.dream.steam.free.common.entity.ImageCode;
 import com.dream.steam.free.common.exception.ValidateCodeException;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;

@@ -3,9 +3,11 @@ package com.dream.steam.free.freesteam.controller;
 import com.dream.steam.free.freesteam.dto.FreeGameDTO;
 import com.dream.steam.free.freesteam.entity.LotteryContent;
 import com.dream.steam.free.freesteam.entity.LotteryRecord;
+import com.dream.steam.free.freesteam.entity.PrizeContent;
 import com.dream.steam.free.freesteam.service.FreeGameService;
 import com.dream.steam.free.freesteam.service.LotteryContentService;
 import com.dream.steam.free.freesteam.service.LotteryRecordService;
+import com.dream.steam.free.freesteam.service.PrizeContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -31,6 +33,23 @@ public class ConsoleController {
 
     @Autowired
     private LotteryRecordService lotteryRecordService;
+
+    @Autowired
+    private PrizeContentService prizeContentService;
+
+    @RequestMapping("prize")
+    public String prize(){
+        return "prize/prize";
+    }
+
+    @RequestMapping("prizeAdd")
+    public String prizeAdd(Long id,Model model){
+        if(id != 0){
+            PrizeContent prizeContent = prizeContentService.findById(id);
+            model.addAttribute("prizeContent",prizeContent);
+        }
+        return "prize/prizeAdd";
+    }
 
     @RequestMapping("console")
     public String console(){
