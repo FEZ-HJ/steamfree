@@ -1,5 +1,6 @@
 package com.dream.steam.free.freesteam.controller;
 
+import com.dream.steam.free.freesteam.dto.PrizeRecordDTO;
 import com.dream.steam.free.freesteam.dto.ReturnJson;
 import com.dream.steam.free.freesteam.entity.LotteryContent;
 import com.dream.steam.free.freesteam.entity.PrizeContent;
@@ -7,6 +8,7 @@ import com.dream.steam.free.freesteam.entity.PrizeRecord;
 import com.dream.steam.free.freesteam.service.PrizeContentService;
 import com.dream.steam.free.freesteam.service.PrizeRecordService;
 import com.dream.steam.free.freesteam.utils.DateUtil;
+import com.dream.steam.free.freesteam.vo.PrizeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -72,17 +74,47 @@ public class PrizeController {
      * 查询全部抽奖信息
      */
     @GetMapping("prizeDetail")
-    public PrizeContent prizeDetail(Long id){
-        return prizeContentService.findById(id);
+    public PrizeVo prizeDetail(Long id){
+//        查询前十个记录
+        List<PrizeRecordDTO> recordDTOList = prizeRecordService.findAllByPrizeId(id,0,10);
+//        查询抽奖总人数
+        int count = prizeRecordService.count(id);
+//        查询奖品详情
+        PrizeContent prizeContent = prizeContentService.findById(id);
+
+        PrizeVo prizeVo = new PrizeVo();
+        prizeVo.setCount(count);
+        prizeVo.setList(recordDTOList);
+        prizeVo.setPrizeContent(prizeContent);
+
+        return prizeVo;
+    }
+
+    /**
+     * 查询全部抽奖人员信息
+     */
+    @GetMapping("prizeRecord")
+    public List<PrizeRecordDTO> prizeRecord(Long id,int page,int size){
+        return prizeRecordService.findAllByPrizeId(id,page,size);
     }
 
     /**
      * 保存抽奖记录
      */
     @PostMapping("insertRecord")
-    public PrizeRecord insertRecord(@RequestBody PrizeRecord prizeRecord){
+    public PrizeVo insertRecord(@RequestBody PrizeRecord prizeRecord){
         prizeRecord.setModifyTime(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));
-        return prizeRecordService.insert(prizeRecord);
+        prizeRecordService.insert(prizeRecord);
+//        查询前十个记录
+        List<PrizeRecordDTO> recordDTOList = prizeRecordService.findAllByPrizeId(prizeRecord.getPrizeId(),0,10);
+//        查询抽奖总人数
+        int count = prizeRecordService.count(prizeRecord.getPrizeId());
+
+        PrizeVo prizeVo = new PrizeVo();
+        prizeVo.setCount(count);
+        prizeVo.setList(recordDTOList);
+
+        return prizeVo;
     }
 
 
