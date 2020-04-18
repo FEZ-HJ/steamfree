@@ -74,13 +74,16 @@ public class PrizeController {
      * 查询全部抽奖信息
      */
     @GetMapping("prizeDetail")
-    public PrizeVo prizeDetail(Long id){
+    public PrizeVo prizeDetail(Long id,String openId){
 //        查询前十个记录
         List<PrizeRecordDTO> recordDTOList = prizeRecordService.findAllByPrizeId(id,0,10);
 //        查询抽奖总人数
         int count = prizeRecordService.count(id);
 //        查询奖品详情
         PrizeContent prizeContent = prizeContentService.findById(id);
+        if(!prizeContent.getWinners().equals(openId)){
+            prizeContent.setCdk("");
+        }
 
         PrizeVo prizeVo = new PrizeVo();
         prizeVo.setCount(count);
@@ -116,6 +119,5 @@ public class PrizeController {
 
         return prizeVo;
     }
-
 
 }

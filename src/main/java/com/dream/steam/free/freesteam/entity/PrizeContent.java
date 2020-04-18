@@ -46,4 +46,10 @@ public class PrizeContent {
     @Column(name = "WINNERS")
     private String winners;
 
+    private String avatarUrl;
+
+    private String nickName;
+
+    private String cdk;
+
 }
