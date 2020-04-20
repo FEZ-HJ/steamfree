@@ -81,7 +81,7 @@ public class PrizeController {
         int count = prizeRecordService.count(id);
 //        查询奖品详情
         PrizeContent prizeContent = prizeContentService.findById(id);
-        if(!prizeContent.getWinners().equals(openId)){
+        if(!openId.equals(prizeContent.getWinners())){
             prizeContent.setCdk("");
         }
 
