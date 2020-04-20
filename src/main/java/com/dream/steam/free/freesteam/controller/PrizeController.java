@@ -120,4 +120,9 @@ public class PrizeController {
         return prizeVo;
     }
 
+    @GetMapping("winnersRecord")
+    public List<PrizeContent> winnersRecord(String openId){
+        return prizeContentService.findAllByWinnersOrderByEndTimeDesc(openId);
+    }
+
 }

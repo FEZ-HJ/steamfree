@@ -19,4 +19,6 @@ public interface PrizeContentRepository extends JpaRepository<PrizeContent,Strin
     int countAllBy();
 
     int deleteById(Long id);
+
+    List<PrizeContent> findAllByWinnersOrderByEndTimeDesc(String winners);
 }

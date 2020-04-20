@@ -45,4 +45,8 @@ public class PrizeContentService {
         return repository.deleteById(id);
     }
 
+    public List<PrizeContent> findAllByWinnersOrderByEndTimeDesc(String winners){
+        return repository.findAllByWinnersOrderByEndTimeDesc(winners);
+    }
+
 }

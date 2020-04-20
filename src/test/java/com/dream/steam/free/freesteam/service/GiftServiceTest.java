@@ -1,5 +1,6 @@
 package com.dream.steam.free.freesteam.service;
 
+import com.dream.steam.free.freesteam.entity.GiftCdk;
 import com.dream.steam.free.freesteam.entity.GiftContent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,5 +33,19 @@ public class GiftServiceTest {
         giftContent.setImg("https://media.st.dl.eccdnx.com/steam/apps/682990/header.jpg?t=1587070097");
         giftContent.setPrice(400);
         giftService.insert(giftContent);
+    }
+
+    @Test
+    public void inset(){
+        GiftCdk giftCdk = new GiftCdk();
+        giftCdk.setGiftId(1l);
+        giftCdk.setCdk("1111111111");
+        giftService.inset(giftCdk);
+    }
+
+    @Test
+    public void findOneByGiftId(){
+        GiftCdk giftCdk = giftService.findOneByGiftId(1L);
+        System.out.println(giftCdk);
     }
 }

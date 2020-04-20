@@ -12,4 +12,6 @@ import java.util.List;
 public interface GiftContentRepository extends JpaRepository<GiftContent,String> {
 
     List<GiftContent> findAllByOrderByPriceAsc();
+
+    GiftContent findOneById(Long giftId);
 }
