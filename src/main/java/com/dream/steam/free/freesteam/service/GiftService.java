@@ -65,23 +65,23 @@ public class GiftService {
         Map<String,Object> map = new HashMap<>();
 
         GiftContent giftContent = repository.findOneById(giftId);
-        if(expService.save(openId,giftContent)){
 //        存入奖品兑换信息
-            GiftCdk giftCdk = findOneByGiftId(giftId);
-            if(giftCdk == null){
-                map.put("message","奖品已被兑换完啦！");
-                map.put("code","100");
-            }else {
+        GiftCdk giftCdk = findOneByGiftId(giftId);
+        if(giftCdk == null){
+            map.put("message","奖品已被兑换完啦！");
+            map.put("code","100");
+        }else {
+            if(expService.save(openId,giftContent)){
                 giftCdk.setCreateTime(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));
                 giftCdk.setOpenId(openId);
                 giftCdkRepository.save(giftCdk);
                 map.put("message","兑换成功！");
                 map.put("giftCdk",giftCdk);
                 map.put("code","200");
+            }else{
+                map.put("message","积分不足");
+                map.put("code","100");
             }
-        }else {
-            map.put("message","积分不够");
-            map.put("code","100");
         }
         return map;
     }

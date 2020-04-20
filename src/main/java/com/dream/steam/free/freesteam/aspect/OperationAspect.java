@@ -21,9 +21,6 @@ import java.lang.reflect.Method;
 @Component
 public class OperationAspect {
 
-    @Autowired
-    private OperationRecordService service;
-
     @Pointcut("@annotation(com.dream.steam.free.freesteam.annotation.OperationAnnotation)")
     public void annotationPointcut() {
     }
@@ -35,6 +32,6 @@ public class OperationAspect {
         OperationAnnotation annotation = method.getAnnotation(OperationAnnotation.class);
         String value = annotation.value();
         String openId = annotation.openId();
-        service.save(new OperationRecord(openId,value));
+//        service.save(new OperationRecord(openId,value));
     }
 }

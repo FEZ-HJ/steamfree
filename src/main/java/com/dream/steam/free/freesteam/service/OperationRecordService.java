@@ -2,7 +2,7 @@ package com.dream.steam.free.freesteam.service;
 
 import com.dream.steam.free.freesteam.entity.OperationRecord;
 import com.dream.steam.free.freesteam.repository.OperationRecordRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.dream.steam.free.SpringContextUtil;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class OperationRecordService {
 
-    @Autowired
-    private  OperationRecordRepository repository;
-
-    public void save(OperationRecord operationRecord){
-        repository.save(operationRecord);
+    public static void save(OperationRecord operationRecord){
+        SpringContextUtil.getBean(OperationRecordRepository.class).save(operationRecord);
     }
 }

@@ -20,9 +20,6 @@ public class SignInRecordService {
     @Autowired
     private SignInRecordRepository signInRecordRepository;
 
-    @Autowired
-    private OperationRecordService service;
-
 //    查询本月的签到记录
     public List<String> findList(String openId){
         List<SignInRecord> list = signInRecordRepository.findByOpenIdAndDataLikeOrderByIdDesc(openId,DateUtil.getDate("yyyy-MM")+"%");
@@ -56,7 +53,7 @@ public class SignInRecordService {
             signInRecord.setContinuous(1);
         }
 
-        service.save(new OperationRecord(openId,"签到"));
+        OperationRecordService.save(new OperationRecord(openId,"签到"));
         return signInRecordRepository.save(signInRecord);
     }
 }

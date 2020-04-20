@@ -17,9 +17,6 @@ public class ExpService {
     @Autowired
     private ExpRepository expRepository;
 
-    @Autowired
-    private OperationRecordService service;
-
     public Exp findByOpenId(String openId){
         return expRepository.findByOpenId(openId);
     }
@@ -38,7 +35,7 @@ public class ExpService {
         }
         exp.setCanUse(exp.getCanUse() + score);
         exp.setScore(exp.getScore() + score);
-        service.save(new OperationRecord(openId,"增加积分：" + score));
+//        service.save(new OperationRecord(openId,"增加积分：" + score));
         return expRepository.save(exp);
     }
 

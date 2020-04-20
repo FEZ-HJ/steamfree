@@ -22,9 +22,6 @@ public class LotteryRecordService {
     @Autowired
     private LotteryRecordRepository repository;
 
-    @Autowired
-    private OperationRecordService service;
-
     public LotteryRecord insert(LotteryRecord lotteryRecord){
         if(lotteryRecord.getId() == null){
             LotteryRecord lotteryRecord1 = repository.findByOpenIdAndUid(lotteryRecord.getOpenId(),lotteryRecord.getUid());
@@ -35,7 +32,7 @@ public class LotteryRecordService {
                 lotteryRecord.setId(lotteryRecord1.getId());
             }
         }
-        service.save(new OperationRecord(lotteryRecord.getOpenId(),"参与抽奖："+lotteryRecord.getUid() ));
+//        service.save(new OperationRecord(lotteryRecord.getOpenId(),"参与抽奖："+lotteryRecord.getUid() ));
         return repository.save(lotteryRecord);
     }
 
