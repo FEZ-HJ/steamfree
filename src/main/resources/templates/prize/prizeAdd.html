@@ -34,7 +34,7 @@
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">封面</label>
-        <div class="layui-input-block" style="width: 35%">
+        <div class="layui-input-block" style="width: 50%">
             <input type="text" name="img" th:if="${prizeContent != null}" th:value="${prizeContent.img}" autocomplete="off" class="layui-input">
             <input type="text" name="img" th:if="${prizeContent == null}" autocomplete="off" class="layui-input">
         </div>
@@ -42,7 +42,7 @@
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">密钥抽奖</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="checkbox" lay-skin="switch" lay-filter="switchTest" th:if="${prizeContent != null && prizeContent.isAd == '是'}" th:checked="${prizeContent.isAd}" lay-text="是|否">
                 <input type="text" id="isAd" name="isAd" th:if="${prizeContent != null && prizeContent.isAd == '是'}" th:value="${prizeContent.isAd}" hidden>
                 <input type="checkbox" lay-skin="switch" lay-filter="switchTest" th:if="${prizeContent == null || prizeContent.isAd == '否'}" lay-text="是|否">
@@ -65,7 +65,46 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <div class="layui-input-block">
+        <div class="layui-inline">
+            <label class="layui-form-label">结束时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="endTime" th:if="${prizeContent != null}" th:value="${prizeContent.endTime}" autocomplete="off" class="layui-input">
+                <input type="text" name="endTime" th:if="${prizeContent == null}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">cdk</label>
+            <div class="layui-input-inline">
+                <input type="text" name="cdk" th:if="${prizeContent != null}" th:value="${prizeContent.cdk}" autocomplete="off" class="layui-input">
+                <input type="text" name="cdk" th:if="${prizeContent == null}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">中奖人</label>
+            <div class="layui-input-inline">
+                <input type="text" name="winners" th:if="${prizeContent != null}" th:value="${prizeContent.winners}" autocomplete="off" class="layui-input">
+                <input type="text" name="winners" th:if="${prizeContent == null}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">昵称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="nickName" th:if="${prizeContent != null}" th:value="${prizeContent.nickName}" autocomplete="off" class="layui-input">
+                <input type="text" name="nickName" th:if="${prizeContent == null}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">头像</label>
+        <div class="layui-input-block"  style="width: 50%">
+            <input type="text" name="avatarUrl" th:if="${prizeContent != null}" th:value="${prizeContent.avatarUrl}" autocomplete="off" class="layui-input">
+            <input type="text" name="avatarUrl" th:if="${prizeContent == null}" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block" style="width: 50%">
             <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
