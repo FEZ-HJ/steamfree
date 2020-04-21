@@ -9,6 +9,7 @@ import com.dream.steam.free.freesteam.service.PrizeContentService;
 import com.dream.steam.free.freesteam.service.PrizeRecordService;
 import com.dream.steam.free.freesteam.utils.DateUtil;
 import com.dream.steam.free.freesteam.vo.PrizeVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,9 @@ public class PrizeController {
     @PostMapping("insert")
     public PrizeContent insert(@RequestBody PrizeContent prizeContent){
         prizeContent.setCreateTime(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));
+        if(StringUtils.isEmpty(prizeContent.getEndTime())){
+            prizeContent.setEndTime(null);
+        }
         return prizeContentService.insert(prizeContent);
     }
 
