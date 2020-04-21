@@ -20,14 +20,13 @@ public class PushForm {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
+    private Long prizeId;
+
     private String openId;
 
     private Date createDate = new Date();
 
-    private Date staleDate;
-
     private Date useDate;
 
-    private String formId;
 
 }

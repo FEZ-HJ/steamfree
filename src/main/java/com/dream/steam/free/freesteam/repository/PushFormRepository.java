@@ -13,13 +13,9 @@ import java.util.List;
  */
 public interface PushFormRepository extends JpaRepository<PushForm,String> {
 
-    List<PushForm> findByOpenIdAndUseDateIsNullAndStaleDateIsAfterOrderByCreateDateAsc(String openId, Date date);
-
-//    select a.open_id,a.form_id from push_form a,(select MIN(create_date) create_date,open_id from push_form where use_date is null and stale_date > now() group by open_id) b where
-//    a.open_id=b.open_id and a.create_date = b.create_date;
-
     @Query(value = "select a.* from push_form a," +
-            "(select MIN(create_date) create_date,open_id from push_form where use_date is null and stale_date > now() group by open_id) " +
+            "(select MIN(create_date) create_date,open_id from push_form where use_date is null group by open_id) " +
             "b where a.open_id=b.open_id and a.create_date = b.create_date;", nativeQuery = true)
     List<PushForm> findAllCanPush();
+
 }

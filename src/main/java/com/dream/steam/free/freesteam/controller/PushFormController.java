@@ -3,11 +3,9 @@ package com.dream.steam.free.freesteam.controller;
 import com.dream.steam.free.freesteam.config.WxConfig;
 import com.dream.steam.free.freesteam.dto.FreeGameDTO;
 import com.dream.steam.free.freesteam.entity.LotteryContent;
+import com.dream.steam.free.freesteam.entity.PrizeContent;
 import com.dream.steam.free.freesteam.entity.PushForm;
-import com.dream.steam.free.freesteam.service.FreeGameService;
-import com.dream.steam.free.freesteam.service.LotteryContentService;
-import com.dream.steam.free.freesteam.service.PushFormService;
-import com.dream.steam.free.freesteam.service.WxTemplateService;
+import com.dream.steam.free.freesteam.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +31,7 @@ public class PushFormController {
     private FreeGameService freeGameService;
 
     @Autowired
-    private LotteryContentService lotteryContentService;
+    private PrizeContentService prizeContentService;
 
     @Autowired
     private WxConfig wxConfig;
@@ -67,11 +65,11 @@ public class PushFormController {
     @GetMapping("pushLottery")
     public void pushLottery(Long id){
         List<PushForm> pushFormList = service.findAllCanPush();
-        LotteryContent lotteryContent = lotteryContentService.findById(id);
+        PrizeContent prizeContent = prizeContentService.findById(id);
         List<String> pushData = new ArrayList<>();
-        pushData.add(lotteryContent.getTitle());
-        pushData.add(lotteryContent.getDescription());
-        pushData.add(lotteryContent.getNickName());
+        pushData.add(prizeContent.getTitle());
+        pushData.add(prizeContent.getEndTime());
+        pushData.add("请前往小程序查看详情！");
         for(PushForm pushForm : pushFormList){
             templateService.push(pushForm,wxConfig.getLottery_template_id(),"pages/lottery-details/index?id="+id,pushData);
             pushForm.setUseDate(new Date());

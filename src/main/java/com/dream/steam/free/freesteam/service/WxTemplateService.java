@@ -39,7 +39,7 @@ public class WxTemplateService {
     public String pushOneUser(WxMssVo wxMssVo){
         //获取access_token
         String access_token = getAccess_token();
-        String url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + access_token;
+        String url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + access_token;
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, wxMssVo, String.class);
         return responseEntity.getBody();
     }
@@ -49,7 +49,6 @@ public class WxTemplateService {
         //拼接推送的模版
         WxMssVo wxMssVo = new WxMssVo();
         wxMssVo.setTouser(pushForm.getOpenId());//用户openid
-        wxMssVo.setForm_id(pushForm.getFormId());//formid
         if(!"".equals(page) && page != null){
             wxMssVo.setPage(page);
         }

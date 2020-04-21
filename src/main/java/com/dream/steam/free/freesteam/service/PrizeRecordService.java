@@ -1,10 +1,7 @@
 package com.dream.steam.free.freesteam.service;
 
 import com.dream.steam.free.freesteam.dto.PrizeRecordDTO;
-import com.dream.steam.free.freesteam.entity.PrizeContent;
-import com.dream.steam.free.freesteam.entity.PrizeDetailRecord;
-import com.dream.steam.free.freesteam.entity.PrizeRecord;
-import com.dream.steam.free.freesteam.entity.User;
+import com.dream.steam.free.freesteam.entity.*;
 import com.dream.steam.free.freesteam.repository.PrizeDetailRecordRepository;
 import com.dream.steam.free.freesteam.repository.PrizeRecordRepository;
 import com.dream.steam.free.freesteam.utils.DateUtil;
@@ -54,6 +51,7 @@ public class PrizeRecordService {
 
             PrizeDetailRecord prizeDetailRecord = new PrizeDetailRecord(prizeRecord);
             prizeDetailRecordRepository.save(prizeDetailRecord);
+            OperationRecordService.save(new OperationRecord(prizeRecord.getOpenId(),"参与抽奖：" + prizeContent.getId()));
         }
 
 //        按人数开奖且没有中奖者时

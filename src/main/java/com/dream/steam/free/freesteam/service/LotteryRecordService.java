@@ -32,7 +32,7 @@ public class LotteryRecordService {
                 lotteryRecord.setId(lotteryRecord1.getId());
             }
         }
-//        service.save(new OperationRecord(lotteryRecord.getOpenId(),"参与抽奖："+lotteryRecord.getUid() ));
+        OperationRecordService.save(new OperationRecord(lotteryRecord.getOpenId(),"参与抽奖"+lotteryRecord.getUid()));
         return repository.save(lotteryRecord);
     }
 

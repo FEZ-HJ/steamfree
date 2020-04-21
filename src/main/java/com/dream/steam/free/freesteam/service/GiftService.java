@@ -3,6 +3,7 @@ package com.dream.steam.free.freesteam.service;
 import com.dream.steam.free.freesteam.dto.ReturnJson;
 import com.dream.steam.free.freesteam.entity.GiftCdk;
 import com.dream.steam.free.freesteam.entity.GiftContent;
+import com.dream.steam.free.freesteam.entity.OperationRecord;
 import com.dream.steam.free.freesteam.repository.GiftCdkRepository;
 import com.dream.steam.free.freesteam.repository.GiftContentRepository;
 import com.dream.steam.free.freesteam.utils.DateUtil;
@@ -75,6 +76,7 @@ public class GiftService {
                 giftCdk.setCreateTime(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));
                 giftCdk.setOpenId(openId);
                 giftCdkRepository.save(giftCdk);
+                OperationRecordService.save(new OperationRecord(openId,"兑换礼品"+giftContent.getTitle()+"成功"));
                 map.put("message","兑换成功！");
                 map.put("giftCdk",giftCdk);
                 map.put("code","200");

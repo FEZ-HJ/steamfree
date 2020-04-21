@@ -35,7 +35,7 @@ public class ExpService {
         }
         exp.setCanUse(exp.getCanUse() + score);
         exp.setScore(exp.getScore() + score);
-//        service.save(new OperationRecord(openId,"增加积分：" + score));
+        OperationRecordService.save(new OperationRecord(openId,"签到增加积分：" + score));
         return expRepository.save(exp);
     }
 
@@ -45,6 +45,7 @@ public class ExpService {
         if(exp.getCanUse() >= giftContent.getPrice()){
             exp.setCanUse(exp.getCanUse() - giftContent.getPrice());
             expRepository.save(exp);
+            OperationRecordService.save(new OperationRecord(openId,"兑换礼品"+giftContent.getTitle()+"扣除积分：" + giftContent.getPrice()));
             return true;
         }
         return false;

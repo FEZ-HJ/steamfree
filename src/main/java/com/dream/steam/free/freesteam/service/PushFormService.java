@@ -20,18 +20,7 @@ public class PushFormService {
     private PushFormRepository repository;
 
     public void insert(PushForm pushForm){
-        pushForm.setStaleDate(DateUtil.addDate(pushForm.getCreateDate(),7L));
         repository.save(pushForm);
-    }
-
-    public PushForm findCanPush(String openId){
-        List<PushForm> list = repository.findByOpenIdAndUseDateIsNullAndStaleDateIsAfterOrderByCreateDateAsc(openId,new Date());
-        if(list != null){
-            return list.get(0);
-        }
-        else {
-            return null;
-        }
     }
 
     public List<PushForm> findAllCanPush(){
