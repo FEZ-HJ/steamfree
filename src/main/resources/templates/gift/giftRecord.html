@@ -12,6 +12,7 @@
 <body>
 <div th:include="common/header"></div>
 
+<input type="hidden" th:value="${id}" id="id">
 <div class="layui-card layadmin-header">
     <div class="layui-breadcrumb" lay-filter="breadcrumb">
         <a lay-href="">主页</a>
@@ -24,7 +25,7 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">奖品详情</div>
+                <div class="layui-card-header">兑换详情</div>
                 <div class="layui-card-body">
                     <table class="layui-hide" id="test-table-page" lay-filter="test-table-page"></table>
                 </div>
@@ -35,32 +36,26 @@
 
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckData" onclick="add()">新 增</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData" onclick="add()">新增兑换券</button>
     </div>
 </script>
 
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编 辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删 除</a>
-    {{#  if(d.isAd === '是'){ }}
-        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="push">开 奖</a>
-    {{#  } }}
-</script>
-
-<script type="text/html" id="barRecord">
-    <a lay-href="console/prizeRecord?id={{d.id}}">{{d.title}}</a>
 </script>
 
 <script th:inline="none">
+
     function add(){
         layer.open({
-            type: 2 //此处以iframe举例
-            ,title: '添加奖品'
-            ,area: ['1000px', '750px']
+            type: 2
+            ,title: '添加兑换券'
+            ,area: ['1000px', '350px']
             ,shade: 0
             ,maxmin: true
-            ,content: ctxPath + 'console/prizeAdd?id=0'
-            ,btn: ['全部关闭'] //只是为了演示
+            ,content: ctxPath + 'console/cdk?cdkId=0&id='+$("#id").val()
+            ,btn: ['全部关闭']
             ,btn2: function(){
                 layer.closeAll();
             }
@@ -73,37 +68,31 @@
         index: 'lib/index' //主入口模块
     }).use(['index', 'table','element'], function(){
         var $ = layui.jquery;
-        var table = layui.table;
+        var admin = layui.admin
+            ,table = layui.table;
 
 
         table.render({
             elem: '#test-table-page'
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
-            ,url: ctxPath + 'prize/list'
+            ,url: ctxPath + 'gift/record?id='+$("#id").val()
             ,cols: [[
-                {field:'id', title: 'ID', sort: true}
-                ,{field:'title', title: '名称',templet:"#barRecord"}
-                ,{field:'detail', title: '描述'}
-                ,{field:'img', title: '图片'}
-                ,{field:'isAd', title: '是否密钥抽奖'}
-                ,{field:'secretKey',  title: '密钥'}
-                ,{field:'total',  title: '开奖次数'}
-                ,{field:'cdk',  title: '兑换码'}
-                ,{field:'createTime', title: '创建时间'}
-                ,{field:'endTime', title: '结束时间'}
-                ,{field:'winners', title: '中奖人'}
+                {field:'id', title: 'cdkID'}
+                ,{field:'giftId', title: '礼品ID'}
+                ,{field:'cdk', title: '兑换码'}
+                ,{field:'openId', title: '兑换人'}
+                ,{field:'createTime', title: '兑换时间'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:180}
             ]]
             ,page: true
         });
-
         //监听行工具事件
         table.on('tool(test-table-page)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
                 layer.confirm('真的删除行么', function(index){
                     $.ajax({
-                        url:ctxPath + 'prize/delete',
+                        url:ctxPath + 'gift/deleteCdk',
                         type:'delete',
                         data: {
                             id: data.id
@@ -119,25 +108,14 @@
                 layer.open({
                     type: 2 //此处以iframe举例
                     ,title: '抽奖详情'
-                    ,area: ['1000px', '750px']
+                    ,area: ['1000px', '350px']
                     ,shade: 0
                     ,maxmin: true
-                    ,content: ctxPath + 'console/prizeAdd?id='+data.id
+                    ,content: ctxPath + 'console/cdk?id='+data.giftId+'&cdkId='+data.id
                     ,btn: ['全部关闭'] //只是为了演示
                     ,btn2: function(){
                         layer.closeAll();
                     }
-                });
-            } else if(obj.event === 'push'){
-                layer.confirm('确认抽奖结果？', function(index){
-                    $.ajax({
-                        url:ctxPath + 'prize/runLottery?prizeId='+data.id,
-                        type:'get',
-                        success: function () {
-                            layer.msg('开奖成功');
-                        }
-                    })
-                    layer.close(index);
                 });
             }
         });

@@ -12,7 +12,6 @@
 <body>
 <div th:include="common/header"></div>
 
-<input type="hidden" th:value="${id}" id="id">
 <div class="layui-card layadmin-header">
     <div class="layui-breadcrumb" lay-filter="breadcrumb">
         <a lay-href="">主页</a>
@@ -25,7 +24,7 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">抽奖详情</div>
+                <div class="layui-card-header">礼品详情</div>
                 <div class="layui-card-body">
                     <table class="layui-hide" id="test-table-page" lay-filter="test-table-page"></table>
                 </div>
@@ -45,16 +44,20 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删 除</a>
 </script>
 
+<script type="text/html" id="barRecord">
+    <a lay-href="console/giftRecord?id={{d.id}}">{{d.title}}</a>
+</script>
+
 <script th:inline="none">
     function add(){
         layer.open({
-            type: 2
-            ,title: '添加奖品'
-            ,area: ['1500px', '750px']
+            type: 2 //此处以iframe举例
+            ,title: '添加礼品'
+            ,area: ['1000px', '750px']
             ,shade: 0
             ,maxmin: true
-            ,content: ctxPath + 'console/lotteryRecordAdd?id=0&uid='+$("#id").val()
-            ,btn: ['全部关闭']
+            ,content: ctxPath + 'console/giftAdd?id=0'
+            ,btn: ['全部关闭'] //只是为了演示
             ,btn2: function(){
                 layer.closeAll();
             }
@@ -67,21 +70,18 @@
         index: 'lib/index' //主入口模块
     }).use(['index', 'table','element'], function(){
         var $ = layui.jquery;
-        var admin = layui.admin
-            ,table = layui.table;
+        var table = layui.table;
 
 
         table.render({
             elem: '#test-table-page'
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
-            ,url: ctxPath + 'lottery/record?id='+$("#id").val()
+            ,url: ctxPath + 'gift/layuiList'
             ,cols: [[
                 {field:'id', title: 'ID', sort: true}
-                ,{field:'uid', title: '奖品ID'}
-                ,{field:'openId', title: '用户ID'}
-                ,{field:'avatarUrl', title: '用户头像'}
-                ,{field:'nickName',  title: '用户昵称'}
-                ,{field:'time', title: '抽奖次数'}
+                ,{field:'title', title: '名称',templet:"#barRecord"}
+                ,{field:'price', title: '价格'}
+                ,{field:'img', title: '图片'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:180}
             ]]
             ,page: true
@@ -93,7 +93,7 @@
             if(obj.event === 'del'){
                 layer.confirm('真的删除行么', function(index){
                     $.ajax({
-                        url:ctxPath + 'lottery/deleteRecord',
+                        url:ctxPath + 'gift/deleteContent',
                         type:'delete',
                         data: {
                             id: data.id
@@ -108,11 +108,11 @@
             } else if(obj.event === 'edit'){
                 layer.open({
                     type: 2 //此处以iframe举例
-                    ,title: '抽奖详情'
-                    ,area: ['1500px', '750px']
+                    ,title: '礼品详情'
+                    ,area: ['1000px', '750px']
                     ,shade: 0
                     ,maxmin: true
-                    ,content: ctxPath + 'console/lotteryRecordAdd?id='+data.id+ '&uid='+$("#id").val()
+                    ,content: ctxPath + 'console/giftAdd?id='+data.id
                     ,btn: ['全部关闭'] //只是为了演示
                     ,btn2: function(){
                         layer.closeAll();

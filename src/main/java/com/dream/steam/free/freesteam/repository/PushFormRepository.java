@@ -15,7 +15,7 @@ public interface PushFormRepository extends JpaRepository<PushForm,String> {
 
     @Query(value = "select a.* from push_form a," +
             "(select MIN(create_date) create_date,open_id from push_form where use_date is null group by open_id) " +
-            "b where a.open_id=b.open_id and a.create_date = b.create_date;", nativeQuery = true)
-    List<PushForm> findAllCanPush();
+            "b where a.open_id=b.open_id and a.create_date = b.create_date and a.prize_id = ?1", nativeQuery = true)
+    List<PushForm> findAllCanPush(Long prizeId);
 
 }

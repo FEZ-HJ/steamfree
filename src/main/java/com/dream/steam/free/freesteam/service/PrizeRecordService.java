@@ -33,6 +33,9 @@ public class PrizeRecordService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PushFormService pushFormService;
+
 //    保存抽奖信息
     @Transient
     public void insert(PrizeRecord prizeRecord){
@@ -55,18 +58,47 @@ public class PrizeRecordService {
         }
 
 //        按人数开奖且没有中奖者时
-        if(prizeContent.getIsAd().equals("否") && StringUtils.isEmpty(prizeContent.getWinners())){
+        if("否".equals(prizeContent.getIsAd()) && StringUtils.isEmpty(prizeContent.getWinners())){
             int count = repository.countAllByPrizeId(prizeRecord.getPrizeId());
             if(count == (prizeContent.getTotal())){
+//                查询中奖者信息
                 String openId = prizeDetailRecordRepository.winThePrize(prizeRecord.getPrizeId());
-                User user = userService.findByOpenId(prizeRecord.getOpenId());
+                User user = userService.findByOpenId(openId);
+                while (user == null){
+                    openId = prizeDetailRecordRepository.winThePrize(prizeRecord.getPrizeId());
+                    user = userService.findByOpenId(openId);
+                }
+//                保存中奖者信息
                 prizeContent.setEndTime(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));
                 prizeContent.setWinners(openId);
                 prizeContent.setAvatarUrl(user.getAvatarUrl());
                 prizeContent.setNickName(user.getNickName());
                 prizeContentService.insert(prizeContent);
+//                推送抽奖结果
+                pushFormService.push(prizeRecord.getPrizeId());
             }
         }
+    }
+
+    @Transient
+    public void runLottery(Long prizeId){
+//        查询奖品信息
+        PrizeContent prizeContent = prizeContentService.findById(prizeId);
+//        获取中奖者信息
+        String openId = prizeDetailRecordRepository.winThePrize(prizeId);
+        User user = userService.findByOpenId(openId);
+        while (user == null){
+            openId = prizeDetailRecordRepository.winThePrize(prizeId);
+            user = userService.findByOpenId(openId);
+        }
+//        报存中奖者信息
+        prizeContent.setEndTime(DateUtil.getDate("yyyy-MM-dd HH:mm:ss"));
+        prizeContent.setWinners(openId);
+        prizeContent.setAvatarUrl(user.getAvatarUrl());
+        prizeContent.setNickName(user.getNickName());
+        prizeContentService.insert(prizeContent);
+//        推送抽奖结果
+        pushFormService.push(prizeId);
     }
 
 //    查询抽奖记录

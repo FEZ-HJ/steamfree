@@ -14,4 +14,8 @@ public interface GiftContentRepository extends JpaRepository<GiftContent,String>
     List<GiftContent> findAllByOrderByPriceAsc();
 
     GiftContent findOneById(Long giftId);
+
+    int countAllBy();
+
+    int deleteById(Long id);
 }

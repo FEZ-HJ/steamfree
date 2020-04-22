@@ -22,7 +22,7 @@ public class PushFormServiceTest {
 
     @Test
     public void findAllCanPush() {
-        List<PushForm> list = service.findAllCanPush();
+        List<PushForm> list = service.findAllCanPush(1l);
         System.out.println();
     }
 }

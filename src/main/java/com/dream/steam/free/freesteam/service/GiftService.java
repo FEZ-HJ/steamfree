@@ -8,6 +8,8 @@ import com.dream.steam.free.freesteam.repository.GiftCdkRepository;
 import com.dream.steam.free.freesteam.repository.GiftContentRepository;
 import com.dream.steam.free.freesteam.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Transient;
@@ -37,6 +39,30 @@ public class GiftService {
         return repository.findAllByOrderByPriceAsc();
     }
 
+    public GiftContent findOneById(Long id){
+        return repository.findOneById(id);
+    }
+
+    public int count(){
+        return repository.countAllBy();
+    }
+
+    public int cdkCountById(Long id){
+        return giftCdkRepository.countAllById(id);
+    }
+
+    public int deleteContent(Long id){
+        return repository.deleteById(id);
+    }
+
+    public int deleteCdk(Long id){
+        return giftCdkRepository.deleteById(id);
+    }
+
+    public int deleteByGiftId(Long id){
+        return giftCdkRepository.deleteByGiftId(id);
+    }
+
 //    新增礼品
     public GiftContent insert(GiftContent giftContent){
         return repository.save(giftContent);
@@ -58,6 +84,10 @@ public class GiftService {
         giftCdk.setGiftId(((BigInteger)object[1]).longValue());
         giftCdk.setCdk((String)object[2]);
         return giftCdk;
+    }
+
+    public GiftCdk findOneByCdkId(Long id){
+        return giftCdkRepository.findOneById(id);
     }
 
 //    兑换礼物
@@ -90,5 +120,10 @@ public class GiftService {
 
     public List<GiftCdk> giftRecord(String openId){
         return giftCdkRepository.findAllByOpenIdOrderByCreateTimeDesc(openId);
+    }
+
+    public List<GiftCdk> record(Long id,int page ,int size){
+        Pageable pageable = PageRequest.of(page,size);
+        return giftCdkRepository.findAllByGiftIdOrderByIdDesc(id,pageable);
     }
 }

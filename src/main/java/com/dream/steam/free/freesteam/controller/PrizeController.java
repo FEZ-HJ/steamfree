@@ -3,6 +3,7 @@ package com.dream.steam.free.freesteam.controller;
 import com.dream.steam.free.freesteam.dto.PrizeRecordDTO;
 import com.dream.steam.free.freesteam.dto.ReturnJson;
 import com.dream.steam.free.freesteam.entity.LotteryContent;
+import com.dream.steam.free.freesteam.entity.LotteryRecord;
 import com.dream.steam.free.freesteam.entity.PrizeContent;
 import com.dream.steam.free.freesteam.entity.PrizeRecord;
 import com.dream.steam.free.freesteam.service.PrizeContentService;
@@ -50,6 +51,16 @@ public class PrizeController {
     public Map<String,Object> content(int page, int limit){
         List<PrizeContent> list = prizeContentService.findAll(page - 1,limit);
         int count = prizeContentService.count();
+        return ReturnJson.RETURN("成功",list,count,0);
+    }
+
+    /**
+     * layui抽奖记录查询接口
+     */
+    @GetMapping("record")
+    public Map<String,Object> record(Long id,int page, int limit){
+        List<PrizeRecordDTO> list = prizeRecordService.findAllByPrizeId(id,page - 1,limit);
+        int count = prizeRecordService.count(id);
         return ReturnJson.RETURN("成功",list,count,0);
     }
 
@@ -129,4 +140,8 @@ public class PrizeController {
         return prizeContentService.findAllByWinnersOrderByEndTimeDesc(openId);
     }
 
+    @GetMapping("runLottery")
+    public void runLottery(Long prizeId){
+        prizeRecordService.runLottery(prizeId);
+    }
 }

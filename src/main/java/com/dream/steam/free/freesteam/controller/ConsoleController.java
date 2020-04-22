@@ -1,13 +1,8 @@
 package com.dream.steam.free.freesteam.controller;
 
 import com.dream.steam.free.freesteam.dto.FreeGameDTO;
-import com.dream.steam.free.freesteam.entity.LotteryContent;
-import com.dream.steam.free.freesteam.entity.LotteryRecord;
-import com.dream.steam.free.freesteam.entity.PrizeContent;
-import com.dream.steam.free.freesteam.service.FreeGameService;
-import com.dream.steam.free.freesteam.service.LotteryContentService;
-import com.dream.steam.free.freesteam.service.LotteryRecordService;
-import com.dream.steam.free.freesteam.service.PrizeContentService;
+import com.dream.steam.free.freesteam.entity.*;
+import com.dream.steam.free.freesteam.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -37,6 +32,9 @@ public class ConsoleController {
     @Autowired
     private PrizeContentService prizeContentService;
 
+    @Autowired
+    private GiftService giftService;
+
     @RequestMapping("prize")
     public String prize(){
         return "prize/prize";
@@ -49,6 +47,43 @@ public class ConsoleController {
             model.addAttribute("prizeContent",prizeContent);
         }
         return "prize/prizeAdd";
+    }
+
+    @RequestMapping("prizeRecord")
+    public String prizeRecord(Long id,Model model){
+        model.addAttribute("id",id);
+        return "prize/prizeRecord";
+    }
+
+    @RequestMapping("gift")
+    public String gift(){
+        return "gift/gift";
+    }
+
+    @RequestMapping("cdk")
+    public String cdk(Long id,Long cdkId,Model model){
+        if(cdkId != 0){
+            GiftCdk giftCdk = giftService.findOneByCdkId(cdkId);
+            model.addAttribute("cdk",giftCdk.getCdk());
+            model.addAttribute("cdkId",cdkId);
+        }
+        model.addAttribute("id",id);
+        return "gift/cdk";
+    }
+
+    @RequestMapping("giftAdd")
+    public String giftAdd(Long id,Model model){
+        if(id != 0){
+            GiftContent giftContent = giftService.findOneById(id);
+            model.addAttribute("giftContent",giftContent);
+        }
+        return "gift/giftAdd";
+    }
+
+    @RequestMapping("giftRecord")
+    public String giftRecord(Long id,Model model){
+        model.addAttribute("id",id);
+        return "gift/giftRecord";
     }
 
     @RequestMapping("console")
@@ -68,26 +103,6 @@ public class ConsoleController {
             model.addAttribute("freeGameDTO",freeGameDTO);
         }
         return "freeSteam/freeGameAdd";
-    }
-
-    @RequestMapping("lottery")
-    public String lottery(){
-        return "freeSteam/lotteryContent";
-    }
-
-    @RequestMapping("lotteryAdd")
-    public String lotteryAdd(Long id,Model model){
-        if(id != 0){
-            LotteryContent lotteryContent = lotteryContentService.findById(id);
-            model.addAttribute("lotteryContent",lotteryContent);
-        }
-        return "freeSteam/lotteryContentAdd";
-    }
-
-    @RequestMapping("lotteryRecord")
-    public String lotteryRecord(Long id,Model model){
-        model.addAttribute("id",id);
-        return "freeSteam/lotteryRecord";
     }
 
     @RequestMapping("lotteryRecordAdd")

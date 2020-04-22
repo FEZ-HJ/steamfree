@@ -1,11 +1,11 @@
 package com.dream.steam.free.freesteam.repository;
 
 import com.dream.steam.free.freesteam.entity.GiftCdk;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by H.J
@@ -17,4 +17,15 @@ public interface GiftCdkRepository extends JpaRepository<GiftCdk,String> {
     Object findOneByGiftId(Long giftId);
 
     List<GiftCdk> findAllByOpenIdOrderByCreateTimeDesc(String openId);
+
+    List<GiftCdk> findAllByGiftIdOrderByIdDesc(Long GiftId,Pageable pageable);
+
+    int countAllById(Long id);
+
+    int deleteById(Long id);
+
+    int deleteByGiftId(Long giftId);
+
+    GiftCdk findOneById(Long id);
+
 }

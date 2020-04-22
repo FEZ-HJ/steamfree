@@ -45,7 +45,7 @@ public class WxTemplateService {
     }
 
 //    包装推送的body
-    public String push(PushForm pushForm, String templateId, String page,List<String> data){
+    public String push(PushForm pushForm, String templateId, String page,Map<String,String> data){
         //拼接推送的模版
         WxMssVo wxMssVo = new WxMssVo();
         wxMssVo.setTouser(pushForm.getOpenId());//用户openid
@@ -55,10 +55,11 @@ public class WxTemplateService {
         wxMssVo.setTemplate_id(templateId);//模版id
 
         Map<String, TemplateData> m = new HashMap<>();
-        for(int i = 0 ; i < data.size() ; i++){
+
+        for (String key : data.keySet()) {
             TemplateData keyword = new TemplateData();
-            keyword.setValue(data.get(i));
-            m.put("keyword"+(i+1), keyword);
+            keyword.setValue(data.get(key));
+            m.put(key, keyword);
         }
         wxMssVo.setData(m);
         return pushOneUser(wxMssVo);
