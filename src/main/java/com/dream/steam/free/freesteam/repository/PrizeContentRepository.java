@@ -14,7 +14,7 @@ public interface PrizeContentRepository extends JpaRepository<PrizeContent,Strin
 
     PrizeContent findById(Long id);
 
-    List<PrizeContent> findAllByOrderByIdDesc(Pageable pageable);
+    List<PrizeContent> findAllByOrderByEndTimeAscIdDesc(Pageable pageable);
 
     int countAllBy();
 

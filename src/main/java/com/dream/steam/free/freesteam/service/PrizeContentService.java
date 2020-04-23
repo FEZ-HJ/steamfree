@@ -32,7 +32,7 @@ public class PrizeContentService {
 
     public List<PrizeContent> findAll(int page , int size){
         Pageable pageable = PageRequest.of(page,size);
-        return repository.findAllByOrderByIdDesc(pageable);
+        return repository.findAllByOrderByEndTimeAscIdDesc(pageable);
     }
 
     public int count(){
