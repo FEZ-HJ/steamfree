@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Date;
+
 /**
  * Created by H.J
  * 2019/10/30
@@ -18,5 +20,7 @@ public class User {
     private String avatarUrl;
 
     private String nickName;
+
+    private Date modifyTime = new Date();
 
 }
