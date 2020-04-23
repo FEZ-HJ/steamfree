@@ -46,6 +46,7 @@ public class PrizeRecordService {
             PrizeRecord prizeRecordOld = repository.findByOpenIdAndPrizeId(prizeRecord.getOpenId(),prizeRecord.getPrizeId());
             if(prizeRecordOld != null){
                 prizeRecordOld.setTimes(prizeRecordOld.getTimes() + 1);
+                prizeRecordOld.setModifyTime(prizeRecord.getModifyTime());
             }else {
                 prizeRecord.setTimes(1);
                 prizeRecordOld = prizeRecord;
