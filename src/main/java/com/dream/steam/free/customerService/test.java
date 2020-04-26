@@ -1,7 +1,7 @@
 package com.dream.steam.free.customerService;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.DigestUtils;
+//import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +44,7 @@ public class test {
                 String[] strArray = new String[] { signature, timestamp, nonce };
                 Arrays.sort(strArray);
                 String tmpStr = StringUtils.join(strArray);
-                tmpStr = DigestUtils.md5DigestAsHex(tmpStr.getBytes());
+//                tmpStr = DigestUtils.md5DigestAsHex(tmpStr.getBytes());
                 // 随机字符串
                 String echostr = request.getParameter("echostr");
 
