@@ -27,7 +27,7 @@ public class test {
      * 3. 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
      */
     @RequestMapping("/cgi")
-    public void cgi(HttpServletRequest request, HttpServletResponse response) {
+    public Boolean cgi(HttpServletRequest request, HttpServletResponse response) {
         boolean isGet = request.getMethod().toLowerCase().equals("get");
         // 微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
         try {
@@ -52,7 +52,9 @@ public class test {
                 System.out.println("----------" + signature);
                 if (signature.equals(tmpStr)) {
                     System.out.println("++++++++++++++++++++++");
-                    response.getOutputStream().write("true".getBytes());
+                    return true;
+                }else {
+                    return false;
                 }
             }else{
                 // 进入POST聊天处理
@@ -66,10 +68,12 @@ public class test {
                 PrintWriter out = response.getWriter();
                 out.print(result);
                 out.close();
+                return true;
             }
         } catch (Exception ex) {
 //            logger.error("微信帐号接口配置失败！", ex);
             ex.printStackTrace();
+            return false;
         }
     }
 
