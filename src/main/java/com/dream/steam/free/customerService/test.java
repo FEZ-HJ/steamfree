@@ -2,6 +2,7 @@ package com.dream.steam.free.customerService;
 
 import org.apache.commons.lang3.StringUtils;
 //import org.springframework.util.DigestUtils;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import java.util.Map;
  * Created by H.J
  * 2020/4/24
  */
+@Controller
 public class test {
 
     /**
