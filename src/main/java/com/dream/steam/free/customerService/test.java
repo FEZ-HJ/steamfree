@@ -1,15 +1,22 @@
 package com.dream.steam.free.customerService;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 //import org.springframework.util.DigestUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -81,9 +88,29 @@ public class test {
      * @param response
      * @return
      */
-    private String acceptMessage(HttpServletRequest request, HttpServletResponse response) {
+    private String acceptMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
 //        {CreateTime=1548042266, Event=user_enter_tempsession, ToUserName=gh_e6198220cbff,
 //                FromUserName=oZvme4q2Oi7Dz3FChXc43kqw28, MsgType=event, SessionFrom=wxapp}
+        ServletInputStream stream = request.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+        while ((line = reader.readLine()) != null){
+            stringBuffer.append(line);
+        }
+        JSONObject jsonObject = JSONObject.parseObject(stringBuffer.toString());
+        System.out.println("+++++++++++"+jsonObject.toString());
+        if(jsonObject.getString("MsgType").equals("text")){
+            Map<String,Object> textMap = new HashMap<>();
+            textMap.put("content","ceshi");
+            Map<String,Object> sendMap = new HashMap<>();
+            sendMap.put("touser",jsonObject.getString("FromUserName"));
+            sendMap.put("text",textMap);
+            sendMap.put("msgtype","text");
+            JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
+
+        }
+
         String respMessage = "";
         try {
             Map<String,String[]> map = request.getParameterMap();
