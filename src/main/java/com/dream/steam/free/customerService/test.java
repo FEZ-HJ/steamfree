@@ -1,7 +1,7 @@
 package com.dream.steam.free.customerService;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.DigestUtils;
+//import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,8 +42,8 @@ public class test {
 
                 String[] strArray = new String[] { token, timestamp, nonce };
                 Arrays.sort(strArray);
-
                 String tmpStr = StringUtils.join(strArray);
+
                 tmpStr = Sha1Util.sha1(tmpStr);
 
                 if (signature.equals(tmpStr)) {
