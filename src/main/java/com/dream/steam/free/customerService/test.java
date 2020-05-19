@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Map;
@@ -32,24 +30,24 @@ public class test {
         // 微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
         try {
             if (isGet) {
-//                微信加密签名
+//                 微信加密签名
                 String signature = request.getParameter("signature");
                 // 时间戳
                 String timestamp = request.getParameter("timestamp");
                 // 随机数
                 String nonce = request.getParameter("nonce");
 
+//                 令牌
                 String token = "yishanyishuihaofengjing";
 
-                String[] strArray = new String[] { signature, timestamp, nonce };
+                String[] strArray = new String[] { token, timestamp, nonce };
                 Arrays.sort(strArray);
+
                 String tmpStr = StringUtils.join(strArray);
-                tmpStr = DigestUtils.md5DigestAsHex(tmpStr.getBytes());
-                // 随机字符串
-                String echostr = request.getParameter("echostr");
+                tmpStr = Sha1Util.sha1(tmpStr);
 
                 if (signature.equals(tmpStr)) {
-                    response.getOutputStream().write(echostr.getBytes());
+                    response.getOutputStream().write("true".getBytes());
                 }
             }else{
                 // 进入POST聊天处理
@@ -68,21 +66,6 @@ public class test {
 //            logger.error("微信帐号接口配置失败！", ex);
             ex.printStackTrace();
         }
-    }
-    /**
-     * 十六进制字节数组转为字符串
-     *
-     * @param hash
-     * @return
-     */
-    private static String byteToHex(final byte[] hash) {
-        Formatter formatter = new Formatter();
-        for (byte b : hash) {
-            formatter.format("%02x", b);
-        }
-        String result = formatter.toString();
-        formatter.close();
-        return result;
     }
 
     /**
