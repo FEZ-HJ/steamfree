@@ -86,6 +86,14 @@ public class test {
 //                FromUserName=oZvme4q2Oi7Dz3FChXc43kqw28, MsgType=event, SessionFrom=wxapp}
         String respMessage = "";
         try {
+            Map<String,String[]> map = request.getParameterMap();
+            for (String key : map.keySet()) {
+                System.out.println("Key = " + key);
+                for(String ss : map.get(key)){
+                    System.out.println(ss);
+                }
+            }
+//            String body = getParam();
             // xml请求解析
             Map<String, String> requestMap =null;
 //            logger.info(">>>>>>>>>>>>>"+requestMap);
