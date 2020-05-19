@@ -48,7 +48,10 @@ public class test {
 
                 tmpStr = Sha1Util.sha1(tmpStr);
 
+                System.out.println("----------" + tmpStr);
+                System.out.println("----------" + signature);
                 if (signature.equals(tmpStr)) {
+                    System.out.println("++++++++++++++++++++++");
                     response.getOutputStream().write("true".getBytes());
                 }
             }else{
