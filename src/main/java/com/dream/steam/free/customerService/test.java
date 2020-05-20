@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ import java.util.Map;
  * Created by H.J
  * 2020/4/24
  */
-@Controller
+@RestController
 public class test {
 
     /**
@@ -32,47 +33,49 @@ public class test {
      * 3. 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
      */
     @RequestMapping("/cgi")
-    public void cgi(HttpServletRequest request, HttpServletResponse response) {
+    public String cgi(HttpServletRequest request, HttpServletResponse response) throws Exception{
         boolean isGet = request.getMethod().toLowerCase().equals("get");
         // 微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
-        try {
-            if (isGet) {
+        if (isGet) {
 //                 微信加密签名
-                String signature = request.getParameter("signature");
-                // 时间戳
-                String timestamp = request.getParameter("timestamp");
-                // 随机数
-                String nonce = request.getParameter("nonce");
+            String signature = request.getParameter("signature");
+            // 时间戳
+            String timestamp = request.getParameter("timestamp");
+            // 随机数
+            String nonce = request.getParameter("nonce");
 //                随机字符串
-                String echostr = request.getParameter("echostr");
+            String echostr = request.getParameter("echostr");
 
 //                 令牌
-                String token = "yishanyishuihaofengjing";
+            String token = "yishanyishuihaofengjing";
 
-                String[] strArray = new String[] { token, timestamp, nonce };
-                Arrays.sort(strArray);
-                String tmpStr = StringUtils.join(strArray);
+//            将三个参数字符串拼接成一个字符串
+            String[] strArray = new String[] { token, timestamp, nonce };
+            Arrays.sort(strArray);
+            String tmpStr = StringUtils.join(strArray);
 
-                tmpStr = Sha1Util.sha1(tmpStr);
+//            进行sha1加密
+            tmpStr = Sha1Util.sha1(tmpStr);
 
-                if (signature.equals(tmpStr)) {
-                    response.getOutputStream().write(echostr.getBytes());
-                }
-            }else{
-                // 进入POST聊天处理
-                // 将请求、响应的编码均设置为UTF-8（防止中文乱码）
-                request.setCharacterEncoding("UTF-8");
-                response.setCharacterEncoding("UTF-8");
-                // 接收消息并返回消息
-                String result = acceptMessage(request, response);
-                // 响应消息
-                PrintWriter out = response.getWriter();
-                out.print(result);
-                out.close();
+//            与signature对比
+            if (signature.equals(tmpStr)) {
+                return echostr;
+//                response.getOutputStream().write(echostr.getBytes());
+            }else {
+                return "";
             }
-        } catch (Exception ex) {
-//            logger.error("微信帐号接口配置失败！", ex);
-            ex.printStackTrace();
+        }else{
+            // 进入POST聊天处理
+            // 将请求、响应的编码均设置为UTF-8（防止中文乱码）
+//            request.setCharacterEncoding("UTF-8");
+//            response.setCharacterEncoding("UTF-8");
+            // 接收消息并返回消息
+            String result = acceptMessage(request, response);
+            return result;
+            // 响应消息
+//            PrintWriter out = response.getWriter();
+//            out.print(result);
+//            out.close();
         }
     }
 
@@ -95,13 +98,23 @@ public class test {
         System.out.println("+++++++++++"+jsonObject.toString());
         if(jsonObject.getString("MsgType").equals("text")){
             Map<String,Object> textMap = new HashMap<>();
-            textMap.put("content","ceshi");
-            Map<String,Object> sendMap = new HashMap<>();
-            sendMap.put("touser",jsonObject.getString("FromUserName"));
-            sendMap.put("text",textMap);
-            sendMap.put("msgtype","text");
-            JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
-            System.out.println(testUtil.sendKfMessage(jsonData));
+            if("1".equals(jsonObject.getString("Content"))){
+                textMap.put("media_id",testUtil.getMediaId("1.jpg"));
+                Map<String,Object> sendMap = new HashMap<>();
+                sendMap.put("touser",jsonObject.getString("FromUserName"));
+                sendMap.put("msgtype","image");
+                sendMap.put("image",textMap);
+                JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
+                testUtil.sendKfMessage(jsonData);
+            }else{
+                textMap.put("content","ceshi");
+                Map<String,Object> sendMap = new HashMap<>();
+                sendMap.put("touser",jsonObject.getString("FromUserName"));
+                sendMap.put("text",textMap);
+                sendMap.put("msgtype","text");
+                JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
+                System.out.println(testUtil.sendKfMessage(jsonData));
+            }
         }
         return "success";
     }
