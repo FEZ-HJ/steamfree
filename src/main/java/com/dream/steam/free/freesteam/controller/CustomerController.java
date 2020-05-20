@@ -1,9 +1,10 @@
-package com.dream.steam.free.customerService;
+package com.dream.steam.free.freesteam.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.dream.steam.free.freesteam.utils.CustomerUtil;
+import com.dream.steam.free.freesteam.utils.Sha1Util;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +23,7 @@ import java.util.Map;
  * 2020/4/24
  */
 @RestController
-public class test {
+public class CustomerController {
 
     /**
      * 微信接口配置信息认证接口<br>
@@ -60,22 +60,11 @@ public class test {
 //            与signature对比
             if (signature.equals(tmpStr)) {
                 return echostr;
-//                response.getOutputStream().write(echostr.getBytes());
             }else {
                 return "";
             }
         }else{
-            // 进入POST聊天处理
-            // 将请求、响应的编码均设置为UTF-8（防止中文乱码）
-//            request.setCharacterEncoding("UTF-8");
-//            response.setCharacterEncoding("UTF-8");
-            // 接收消息并返回消息
-            String result = acceptMessage(request, response);
-            return result;
-            // 响应消息
-//            PrintWriter out = response.getWriter();
-//            out.print(result);
-//            out.close();
+            return acceptMessage(request, response);
         }
     }
 
@@ -98,22 +87,12 @@ public class test {
         System.out.println("+++++++++++"+jsonObject.toString());
         if(jsonObject.getString("MsgType").equals("text")){
             Map<String,Object> textMap = new HashMap<>();
+            //回复 1 ，发送公众号二维码
             if("1".equals(jsonObject.getString("Content"))){
-                textMap.put("media_id",testUtil.getMediaId("1.jpg"));
-                Map<String,Object> sendMap = new HashMap<>();
-                sendMap.put("touser",jsonObject.getString("FromUserName"));
-                sendMap.put("msgtype","image");
-                sendMap.put("image",textMap);
-                JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
-                testUtil.sendKfMessage(jsonData);
+                CustomerUtil.sendImage(jsonObject,"1.jpg");
+                CustomerUtil.sendText(jsonObject,"长按识别二维码关注【steam限免助手】公众号！");
             }else{
-                textMap.put("content","ceshi");
-                Map<String,Object> sendMap = new HashMap<>();
-                sendMap.put("touser",jsonObject.getString("FromUserName"));
-                sendMap.put("text",textMap);
-                sendMap.put("msgtype","text");
-                JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
-                System.out.println(testUtil.sendKfMessage(jsonData));
+                return CustomerUtil.sendService(jsonObject);
             }
         }
         return "success";

@@ -1,4 +1,4 @@
-package com.dream.steam.free.customerService;
+package com.dream.steam.free.freesteam.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,6 +11,9 @@ import java.util.Map;
  */
 public class Sha1Util {
 
+    /**
+     * SHA1加密
+     */
     public static String sha1(String data) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA1");
         md.update(data.getBytes());
@@ -23,19 +26,5 @@ public class Sha1Util {
             buf.append(Integer.toHexString(a));
         }
         return buf.toString();
-    }
-
-    public static void main(String[] args) throws NoSuchAlgorithmException {
-        Map<String,String[]> map = new HashMap<>();
-        String[] s = {"sda","a"};
-        map.put("sda",s);
-        for (String key : map.keySet()) {
-            System.out.println("Key = " + key);
-            for(String ss : map.get(key)){
-                System.out.println(ss);
-            }
-
-        }
-
     }
 }

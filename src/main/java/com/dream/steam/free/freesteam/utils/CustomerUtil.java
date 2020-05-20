@@ -1,6 +1,7 @@
-package com.dream.steam.free.customerService;
+package com.dream.steam.free.freesteam.utils;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
@@ -13,13 +14,16 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.FileNotFoundException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
  * Created by H.J
  * 2020/4/24
  */
-public class testUtil {
+public class CustomerUtil {
 
     public static LocalCache localCache = new LocalCache();
 
@@ -92,8 +96,52 @@ public class testUtil {
         return value.toString();
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        System.out.println(getMediaId("1.jpg"));
+    /**
+     * 发送图片客服消息
+     */
+    public static ResponseEntity<String> sendImage(JSONObject jsonObject,String fileName) throws FileNotFoundException {
+        Map<String,Object> textMap = new HashMap<>();
+        textMap.put("media_id", getMediaId(fileName));
+        Map<String,Object> sendMap = new HashMap<>();
+        sendMap.put("touser",jsonObject.getString("FromUserName"));
+        sendMap.put("msgtype","image");
+        sendMap.put("image",textMap);
+        JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.postForEntity(send_url+getToken(),jsonData.toString(),String.class);
+    }
+
+    /**
+     * 发送文字客服消息
+     */
+    public static ResponseEntity<String> sendText(JSONObject jsonObject,String content)  {
+        Map<String,Object> textMap = new HashMap<>();
+        textMap.put("content", content);
+        Map<String,Object> sendMap = new HashMap<>();
+        sendMap.put("touser",jsonObject.getString("FromUserName"));
+        sendMap.put("msgtype","text");
+        sendMap.put("text",textMap);
+        JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.postForEntity(send_url+getToken(),jsonData.toString(),String.class);
+    }
+
+    /**
+     * 发送文字客服消息
+     */
+    public static String sendService(JSONObject jsonObject) {
+        Map<String,Object> sendMap = new HashMap<>();
+        sendMap.put("ToUserName",jsonObject.getString("FromUserName"));
+        sendMap.put("FromUserName","huang193921");
+        sendMap.put("CreateTime",new Date().getTime() / 1000);
+        sendMap.put("msgtype","transfer_customer_service");
+        JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
+        return jsonData.toString();
+    }
+
+    public static void main(String[] args) {
+        long s = new Date().getTime();
+        System.out.println(s);
     }
 
 }
