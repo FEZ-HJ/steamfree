@@ -2,6 +2,8 @@ package com.dream.steam.free.customerService;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by H.J
@@ -24,6 +26,16 @@ public class Sha1Util {
     }
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
-        System.out.println(Sha1Util.sha1("Shanghai"));
+        Map<String,String[]> map = new HashMap<>();
+        String[] s = {"sda","a"};
+        map.put("sda",s);
+        for (String key : map.keySet()) {
+            System.out.println("Key = " + key);
+            for(String ss : map.get(key)){
+                System.out.println(ss);
+            }
+
+        }
+
     }
 }

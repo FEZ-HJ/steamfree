@@ -3,7 +3,6 @@ package com.dream.steam.free.customerService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-//import org.springframework.util.DigestUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,10 +55,7 @@ public class test {
 
                 tmpStr = Sha1Util.sha1(tmpStr);
 
-                System.out.println("----------" + tmpStr);
-                System.out.println("----------" + signature);
                 if (signature.equals(tmpStr)) {
-                    System.out.println("++++++++++++++++++++++");
                     response.getOutputStream().write(echostr.getBytes());
                 }
             }else{
@@ -70,7 +65,6 @@ public class test {
                 response.setCharacterEncoding("UTF-8");
                 // 接收消息并返回消息
                 String result = acceptMessage(request, response);
-
                 // 响应消息
                 PrintWriter out = response.getWriter();
                 out.print(result);
@@ -89,11 +83,10 @@ public class test {
      * @return
      */
     private String acceptMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        {CreateTime=1548042266, Event=user_enter_tempsession, ToUserName=gh_e6198220cbff,
-//                FromUserName=oZvme4q2Oi7Dz3FChXc43kqw28, MsgType=event, SessionFrom=wxapp}
+//        {"Content":"哈哈","CreateTime":1589892063,"ToUserName":"gh_dd7f4b53b189","FromUserName":"obNf945tfBwIoR2k4M1nC18OA6ok","MsgType":"text","MsgId":22761783588346819}
         ServletInputStream stream = request.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuffer = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null){
             stringBuffer.append(line);
@@ -108,56 +101,8 @@ public class test {
             sendMap.put("text",textMap);
             sendMap.put("msgtype","text");
             JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
-
+            System.out.println(testUtil.sendKfMessage(jsonData));
         }
-
-        String respMessage = "";
-        try {
-            Map<String,String[]> map = request.getParameterMap();
-            for (String key : map.keySet()) {
-                System.out.println("Key = " + key);
-                for(String ss : map.get(key)){
-                    System.out.println(ss);
-                }
-            }
-//            String body = getParam();
-            // xml请求解析
-            Map<String, String> requestMap =null;
-//            logger.info(">>>>>>>>>>>>>"+requestMap);
-            // 发送方帐号（open_id）
-            String fromUserName = requestMap.get("FromUserName");
-            // 公众帐号
-            String toUserName = requestMap.get("ToUserName");
-            // 消息类型
-            String msgType = requestMap.get("MsgType");
-            String Event = requestMap.get("Event");  //SCAN 为扫描信息  VIEW 公众号底部点击事件
-//            logger.info("fromUserName = "+fromUserName+" , ToUserName = "+toUserName+ " , msgType = "+msgType);
-
-//            HmhWxTokenEntity tokenEntity = hmhWxTokenService.getHmhWxTokenInfoById(Long.parseLong(String.valueOf(1)));
-
-            StringBuffer contentMsg = new StringBuffer();
-            String html = "https://xxxxx.cn/index/wechat/index.html?oid="+fromUserName;
-            String url = "☞ <a href=\""+html+"\">点击跳转</a>";
-            //公众号关注事件消息
-            if(msgType.equals("event")){
-                contentMsg.append("↓↓您的专属充值链接↓↓").append("\n");
-                contentMsg.append(url);
-//                if(tokenEntity!=null){
-                    testUtil.sendKfMessage(fromUserName,contentMsg.toString(),testUtil.getToken()); //把封装好的信息推送给用户
-//                }
-            }else if(msgType.equals("text")){
-//                logger.info("公众号接受文字..........");
-                contentMsg.append("↓↓您的专属充值链接↓↓").append("\n");
-                contentMsg.append(url);
-//                if(tokenEntity!=null){
-                    testUtil.sendKfMessage(fromUserName,contentMsg.toString(),testUtil.getToken());
-//                }
-            }else if(msgType.equals("image")){
-//                logger.info("公众号接受图片..........");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return respMessage;
+        return "success";
     }
 }
