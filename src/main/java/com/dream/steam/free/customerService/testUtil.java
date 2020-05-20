@@ -84,9 +84,8 @@ public class testUtil {
     public static String getMediaId(String name) throws FileNotFoundException {
         Object value = localCache.get(name);
         if(value == null){
-            System.out.println(ResourceUtils.getURL("classpath:").getPath());
-            String u = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\media";
-            String mediaId = uploadTempMedia("/opt/steamfree/webapps/steamfree/WEB-INF/classes/static",name);
+            String filePath = ResourceUtils.getURL("classpath:").getPath() + "static/media";
+            String mediaId = uploadTempMedia(filePath,name);
             localCache.set(name,mediaId,3*24*60*60*1000);
             value = localCache.get(name);
         }
