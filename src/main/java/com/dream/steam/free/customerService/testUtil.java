@@ -9,7 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.FileNotFoundException;
 
 
 /**
@@ -78,18 +81,19 @@ public class testUtil {
     /**
      * 从缓存获取素材ID
      */
-    public static String getMediaId(String name){
+    public static String getMediaId(String name) throws FileNotFoundException {
         Object value = localCache.get(name);
         if(value == null){
+            System.out.println(ResourceUtils.getURL("classpath:").getPath());
             String u = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\media";
-            String mediaId = uploadTempMedia(u,name);
+            String mediaId = uploadTempMedia("/opt/steamfree/webapps/steamfree/WEB-INF/classes/static",name);
             localCache.set(name,mediaId,3*24*60*60*1000);
             value = localCache.get(name);
         }
         return value.toString();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         System.out.println(getMediaId("1.jpg"));
     }
 
