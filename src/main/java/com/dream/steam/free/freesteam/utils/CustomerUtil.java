@@ -139,22 +139,21 @@ public class CustomerUtil {
      * 发送文字客服消息
      */
     public static String sendService(JSONObject jsonObject) {
-        String responseMessage = "<xml>" +
-                "     <ToUserName><![CDATA[" + jsonObject.getString("FromUserName") + "]]></ToUserName>" +
-                "     <FromUserName><![CDATA[" + jsonObject.getString("ToUserName") + "]]></FromUserName>" +
-                "     <CreateTime>" + jsonObject.getString("CreateTime") + "</CreateTime>" +
-                "     <MsgType><![CDATA[transfer_customer_service]]></MsgType>" +
-                " </xml>";
-        return responseMessage;
+//        String responseMessage = "<xml>" +
+//                "<ToUserName><![CDATA[" + jsonObject.getString("FromUserName") + "]]></ToUserName>" +
+//                "<FromUserName><![CDATA[" + jsonObject.getString("ToUserName") + "]]></FromUserName>" +
+//                "<CreateTime>" + jsonObject.getString("CreateTime") + "</CreateTime>" +
+//                "<MsgType><![CDATA[transfer_customer_service]]></MsgType>" +
+//                " </xml>";
+//        return responseMessage;
 
 
-//        Map<String,Object> sendMap = new HashMap<>();
-//        sendMap.put("ToUserName",jsonObject.getString("FromUserName"));
-//        sendMap.put("FromUserName","huang193921");
-//        sendMap.put("CreateTime",new Date().getTime() / 1000);
-//        sendMap.put("msgtype","transfer_customer_service");
-//        JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
-//        return jsonData.toString();
+        Map<String,Object> sendMap = new HashMap<>();
+        sendMap.put("ToUserName",jsonObject.getString("FromUserName"));
+        sendMap.put("FromUserName",jsonObject.getString("ToUserName"));
+        sendMap.put("CreateTime",jsonObject.getString("CreateTime"));
+        sendMap.put("MsgType","transfer_customer_service");
+        return JSON.toJSONString(sendMap);
     }
 
     public static void main(String[] args) {
