@@ -16,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,14 +47,6 @@ public class CustomerUtil {
             value = localCache.get("wxkf_token");
         }
         return value.toString();
-    }
-
-    /**
-     * 发送客服消息
-     */
-    public static ResponseEntity<String> sendKfMessage(JSONObject jsonObject){
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForEntity(send_url+getToken(),jsonObject.toString(),String.class);
     }
 
     /**
@@ -127,38 +118,24 @@ public class CustomerUtil {
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().set(1,new StringHttpMessageConverter(StandardCharsets.UTF_8));
-        MediaType type = MediaType.parseMediaType("application/json;charset=UTF-8");
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(type);
-        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
+//        MediaType type = MediaType.parseMediaType("application/json;charset=UTF-8");
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(type);
+//        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
 
         return restTemplate.postForEntity(send_url+getToken(),jsonData.toString(),String.class);
     }
 
     /**
-     * 发送文字客服消息
+     * 转到人工客服
      */
     public static String sendService(JSONObject jsonObject) {
-//        String responseMessage = "<xml>" +
-//                "<ToUserName><![CDATA[" + jsonObject.getString("FromUserName") + "]]></ToUserName>" +
-//                "<FromUserName><![CDATA[" + jsonObject.getString("ToUserName") + "]]></FromUserName>" +
-//                "<CreateTime>" + jsonObject.getString("CreateTime") + "</CreateTime>" +
-//                "<MsgType><![CDATA[transfer_customer_service]]></MsgType>" +
-//                " </xml>";
-//        return responseMessage;
-
-
         Map<String,Object> sendMap = new HashMap<>();
         sendMap.put("ToUserName",jsonObject.getString("FromUserName"));
         sendMap.put("FromUserName",jsonObject.getString("ToUserName"));
         sendMap.put("CreateTime",jsonObject.getString("CreateTime"));
         sendMap.put("MsgType","transfer_customer_service");
         return JSON.toJSONString(sendMap);
-    }
-
-    public static void main(String[] args) {
-        long s = new Date().getTime();
-        System.out.println(s);
     }
 
 }
