@@ -8,12 +8,14 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -122,7 +124,14 @@ public class CustomerUtil {
         sendMap.put("msgtype","text");
         sendMap.put("text",textMap);
         JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
+
         RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().set(1,new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        MediaType type = MediaType.parseMediaType("application/json;charset=UTF-8");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(type);
+        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
+
         return restTemplate.postForEntity(send_url+getToken(),jsonData.toString(),String.class);
     }
 
@@ -130,13 +139,22 @@ public class CustomerUtil {
      * 发送文字客服消息
      */
     public static String sendService(JSONObject jsonObject) {
-        Map<String,Object> sendMap = new HashMap<>();
-        sendMap.put("ToUserName",jsonObject.getString("FromUserName"));
-        sendMap.put("FromUserName","huang193921");
-        sendMap.put("CreateTime",new Date().getTime() / 1000);
-        sendMap.put("msgtype","transfer_customer_service");
-        JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
-        return jsonData.toString();
+        String responseMessage = "<xml>" +
+                "     <ToUserName><![CDATA[" + jsonObject.getString("FromUserName") + "]]></ToUserName>" +
+                "     <FromUserName><![CDATA[" + jsonObject.getString("ToUserName") + "]]></FromUserName>" +
+                "     <CreateTime>" + jsonObject.getString("CreateTime") + "</CreateTime>" +
+                "     <MsgType><![CDATA[transfer_customer_service]]></MsgType>" +
+                " </xml>";
+        return responseMessage;
+
+
+//        Map<String,Object> sendMap = new HashMap<>();
+//        sendMap.put("ToUserName",jsonObject.getString("FromUserName"));
+//        sendMap.put("FromUserName","huang193921");
+//        sendMap.put("CreateTime",new Date().getTime() / 1000);
+//        sendMap.put("msgtype","transfer_customer_service");
+//        JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
+//        return jsonData.toString();
     }
 
     public static void main(String[] args) {
