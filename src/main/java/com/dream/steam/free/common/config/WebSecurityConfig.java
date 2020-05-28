@@ -96,7 +96,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web){
         //解决静态资源被拦截的问题
         web.ignoring().antMatchers("/style/**","/layui/**","/lib/**","/modules/**","/config.js");
-        web.ignoring().antMatchers("/login","/wxLogin","/code/image","/freeGame/findAll"
+        web.ignoring().antMatchers("/login","/wxLogin","/homepage","/code/image","/freeGame/findAll"
                 ,"/freeGame/findById","/lottery/**","/push/insert","/gift/**","/prize/**","/cgi","/s","/signIn/**","/user/**");
     }
 }
