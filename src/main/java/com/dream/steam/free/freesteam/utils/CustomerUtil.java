@@ -29,7 +29,7 @@ public class CustomerUtil {
     public static LocalCache localCache = new LocalCache();
 
     //客服消息推送地址
-    public final static String token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc78e9d02efadbba9&secret=5e2c9d2607b39653c92805fad551253a";
+    public final static String token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxf9de43e2411b1a2d&secret=544b24d1cebc55d2be5bbefe3d84cbb4";
     public final static String send_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=";
     public final static String upload_url = "https://api.weixin.qq.com/cgi-bin/media/upload?type=image&access_token=";
 
@@ -92,11 +92,11 @@ public class CustomerUtil {
     /**
      * 发送图片客服消息
      */
-    public static ResponseEntity<String> sendImage(JSONObject jsonObject,String fileName) throws FileNotFoundException {
+    public static ResponseEntity<String> sendImage(String FromUserName,String fileName) throws FileNotFoundException {
         Map<String,Object> textMap = new HashMap<>();
         textMap.put("media_id", getMediaId(fileName));
         Map<String,Object> sendMap = new HashMap<>();
-        sendMap.put("touser",jsonObject.getString("FromUserName"));
+        sendMap.put("touser",FromUserName);
         sendMap.put("msgtype","image");
         sendMap.put("image",textMap);
         JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
@@ -107,11 +107,11 @@ public class CustomerUtil {
     /**
      * 发送文字客服消息
      */
-    public static ResponseEntity<String> sendText(JSONObject jsonObject,String content)  {
+    public static ResponseEntity<String> sendText(String FromUserName,String content)  {
         Map<String,Object> textMap = new HashMap<>();
         textMap.put("content", content);
         Map<String,Object> sendMap = new HashMap<>();
-        sendMap.put("touser",jsonObject.getString("FromUserName"));
+        sendMap.put("touser",FromUserName);
         sendMap.put("msgtype","text");
         sendMap.put("text",textMap);
         JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));

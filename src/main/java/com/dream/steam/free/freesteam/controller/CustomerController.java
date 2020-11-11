@@ -17,8 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -83,28 +85,46 @@ public class CustomerController {
         ServletInputStream stream = request.getInputStream();
         Document document = new SAXBuilder().build(stream);
         Element rootElement = document.getRootElement();
-        rootElement.getAttribute("MsgType");
-        System.out.println(rootElement.getAttribute("MsgType"));
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        StringBuilder stringBuffer = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null){
-            stringBuffer.append(line);
-        }
-        System.out.println("+++++++++++"+stringBuffer.toString());
-        JSONObject jsonObject = JSONObject.parseObject(stringBuffer.toString());
-        System.out.println("+++++++++++"+jsonObject.toString());
-        if(jsonObject.getString("MsgType").equals("text")){
+        rootElement.getChildText("MsgType");
+//        System.out.println(rootElement.getChildText("MsgType"));
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+//        StringBuilder stringBuffer = new StringBuilder();
+//        String line;
+//        while ((line = reader.readLine()) != null){
+//            stringBuffer.append(line);
+//        }
+//        System.out.println("+++++++++++"+stringBuffer.toString());
+//        JSONObject jsonObject = JSONObject.parseObject(stringBuffer.toString());
+//        System.out.println("+++++++++++"+jsonObject.toString());
+        if(rootElement.getChildText("MsgType").equals("text")){
             Map<String,Object> textMap = new HashMap<>();
             //回复 1 ，发送公众号二维码
-            if("1".equals(jsonObject.getString("Content"))){
-                CustomerUtil.sendImage(jsonObject,"1.jpg");
-                CustomerUtil.sendText(jsonObject,"长按识别二维码关注【steam限免助手】公众号！");
+            if("1".equals(rootElement.getChildText("Content"))){
+//                CustomerUtil.sendImage(jsonObject,"1.jpg");
+                CustomerUtil.sendText(rootElement.getChildText("FromUserName"),"长按识别二维码关注【steam限免助手】公众号！");
             }else{
-                return CustomerUtil.sendService(jsonObject);
+//                return CustomerUtil.sendService(jsonObject);
             }
         }
         return "success";
     }
 
+    public static void main(String[] args) throws JDOMException, IOException {
+        String s = "<xml><ToUserName><![CDATA[gh_725c76a4d73a]]></ToUserName><FromUserName><![CDATA[oKqq9wEDDUjTkJgqipWd0IFwi8yI]]></FromUserName></xml>";
+        SAXBuilder builder = new SAXBuilder();
+        StringReader sr = new StringReader(s);
+        Document document = new Document();
+        try{
+            document = builder.build(sr);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Element foo = document.getRootElement();
+        System.out.println(foo.getChildText("ToUserName"));
+        List list = foo.getChildren();
+        for(int i = 0 ; i < list.size(); i++){
+            Element element = (Element) list.get(i);
+            System.out.println(element.getChildText("ToUserName"));
+        }
+    }
 }
