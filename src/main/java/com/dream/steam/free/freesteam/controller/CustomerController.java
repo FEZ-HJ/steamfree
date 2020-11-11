@@ -91,7 +91,7 @@ public class CustomerController {
             System.out.println("+++++++++" + rootElement.getChildText("Content"));
             //回复 1 ，发送公众号二维码
             if("1".equals(rootElement.getChildText("Content"))){
-                CustomerUtil.sendImage(rootElement,"1.jpg");
+//                CustomerUtil.sendImage(rootElement,"1.jpg");
                 CustomerUtil.sendText(rootElement,"长按识别二维码关注【steam限免助手】公众号！");
             }else{
                 return CustomerUtil.sendService(rootElement);
@@ -100,7 +100,4 @@ public class CustomerController {
         return "success";
     }
 
-    public static void main(String[] args) throws JDOMException, IOException {
-
-    }
 }

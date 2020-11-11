@@ -107,7 +107,7 @@ public class CustomerUtil {
         //3、FromUserName，开发者微信号
         Element fromUserName  = new Element("FromUserName");
         fromUserName.addContent(new CDATA(element.getChildText("ToUserName")));
-        xml.addContent(toUserName);
+        xml.addContent(fromUserName);
         //4、CreateTime消息创建时间
         Element createTime = new Element("CreateTime");
         createTime.addContent(System.currentTimeMillis() / 1000 + "");
