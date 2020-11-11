@@ -84,6 +84,7 @@ public class CustomerController {
         while ((line = reader.readLine()) != null){
             stringBuffer.append(line);
         }
+        System.out.println("+++++++++++"+stringBuffer.toString());
         JSONObject jsonObject = JSONObject.parseObject(stringBuffer.toString());
         System.out.println("+++++++++++"+jsonObject.toString());
         if(jsonObject.getString("MsgType").equals("text")){
