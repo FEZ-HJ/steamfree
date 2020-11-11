@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
+import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -92,7 +89,17 @@ public class CustomerController {
             //回复 1 ，发送公众号二维码
             if("1".equals(rootElement.getChildText("Content"))){
 //                CustomerUtil.sendImage(rootElement,"1.jpg");
-                CustomerUtil.sendText(rootElement,"长按识别二维码关注【steam限免助手】公众号！");
+                PrintWriter out = null;
+                try{
+                    out = response.getWriter();
+                    out.print(CustomerUtil.sendText(rootElement,"长按识别二维码关注【steam限免助手】公众号！"));
+                }catch (Exception e){
+
+                }finally {
+                    out.close();
+                    out = null;
+                }
+//                CustomerUtil.sendText(rootElement,"长按识别二维码关注【steam限免助手】公众号！");
             }else{
                 return CustomerUtil.sendService(rootElement);
             }

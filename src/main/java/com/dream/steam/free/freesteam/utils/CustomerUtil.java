@@ -135,7 +135,7 @@ public class CustomerUtil {
     /**
      * 发送文字客服消息
      */
-    public static ResponseEntity<String> sendText(Element element,String content)  {
+    public static String sendText(Element element,String content)  {
         String resultStr = "";
         Element xml = new Element("xml");
         //2、一个ToUserName节点,以及节点内容,openID
@@ -175,7 +175,8 @@ public class CustomerUtil {
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().set(1,new StringHttpMessageConverter(StandardCharsets.UTF_8));
-        return restTemplate.postForEntity(send_url+getToken(),resultStr,String.class);
+//        return restTemplate.postForEntity(send_url+getToken(),resultStr,String.class);
+        return resultStr;
     }
 
     /**
