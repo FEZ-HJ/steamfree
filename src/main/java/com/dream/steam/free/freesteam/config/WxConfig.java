@@ -16,5 +16,7 @@ public class WxConfig {
     String secret;
     String free_template_id;
     String lottery_template_id;
+    String gAppID;
+    String gAppSecret;
 }
 

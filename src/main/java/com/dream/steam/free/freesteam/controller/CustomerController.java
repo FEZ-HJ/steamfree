@@ -35,6 +35,7 @@ public class CustomerController {
     @RequestMapping("/cgi")
     public String cgi(HttpServletRequest request, HttpServletResponse response) throws Exception{
         boolean isGet = request.getMethod().toLowerCase().equals("get");
+        System.out.println("-------------" + isGet);
         // 微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
         if (isGet) {
 //                 微信加密签名
