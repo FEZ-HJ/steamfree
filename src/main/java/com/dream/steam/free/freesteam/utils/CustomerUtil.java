@@ -173,8 +173,8 @@ public class CustomerUtil {
             e.printStackTrace();
         }
 
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getMessageConverters().set(1,new StringHttpMessageConverter(StandardCharsets.UTF_8));
+//        RestTemplate restTemplate = new RestTemplate();
+//        restTemplate.getMessageConverters().set(1,new StringHttpMessageConverter(StandardCharsets.UTF_8));
 //        return restTemplate.postForEntity(send_url+getToken(),resultStr,String.class);
         return resultStr;
     }
