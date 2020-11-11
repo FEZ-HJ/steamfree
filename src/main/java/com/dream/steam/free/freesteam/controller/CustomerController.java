@@ -1,10 +1,13 @@
 package com.dream.steam.free.freesteam.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dream.steam.free.freesteam.utils.CustomerUtil;
 import com.dream.steam.free.freesteam.utils.Sha1Util;
 import org.apache.commons.lang3.StringUtils;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -75,9 +78,13 @@ public class CustomerController {
      * @param response
      * @return
      */
-    private String acceptMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private String acceptMessage(HttpServletRequest request, HttpServletResponse response) throws IOException, JDOMException {
 //        {"Content":"哈哈","CreateTime":1589892063,"ToUserName":"gh_dd7f4b53b189","FromUserName":"obNf945tfBwIoR2k4M1nC18OA6ok","MsgType":"text","MsgId":22761783588346819}
         ServletInputStream stream = request.getInputStream();
+        Document document = new SAXBuilder().build(stream);
+        Element rootElement = document.getRootElement();
+        rootElement.getAttribute("MsgType");
+        System.out.println(rootElement.getAttribute("MsgType"));
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         StringBuilder stringBuffer = new StringBuilder();
         String line;
@@ -99,4 +106,5 @@ public class CustomerController {
         }
         return "success";
     }
+
 }
