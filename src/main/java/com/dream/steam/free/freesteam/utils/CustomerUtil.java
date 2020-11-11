@@ -156,7 +156,7 @@ public class CustomerUtil {
         xml.addContent(msgType);
         //5、消息类型MsgType
         Element Content = new Element("Content");
-        msgType.addContent(new CDATA(content));
+        Content.addContent(new CDATA(content));
         xml.addContent(Content);
 
         try {
