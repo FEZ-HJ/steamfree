@@ -3,7 +3,10 @@ package com.dream.steam.free.freesteam.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.jdom.CDATA;
 import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +18,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -93,11 +98,33 @@ public class CustomerUtil {
     /**
      * 发送图片客服消息
      */
-    public static ResponseEntity<String> sendImage(String FromUserName,String fileName) throws FileNotFoundException {
+    public static ResponseEntity<String> sendImage(Element element,String fileName) throws FileNotFoundException {
+        Element xml = new Element("xml");
+        //2、一个ToUserName节点,以及节点内容,openID
+        Element toUserName = new Element("ToUserName");
+        toUserName.addContent(new CDATA(element.getChildText("FromUserName")));
+        xml.addContent(toUserName);
+        //3、FromUserName，开发者微信号
+        Element fromUserName  = new Element("FromUserName");
+        fromUserName.addContent(new CDATA(element.getChildText("ToUserName")));
+        xml.addContent(toUserName);
+        //4、CreateTime消息创建时间
+        Element createTime = new Element("CreateTime");
+        createTime.addContent(System.currentTimeMillis() / 1000 + "");
+        xml.addContent(createTime);
+        //5、消息类型MsgType
+        Element msgType = new Element("MsgType");
+        msgType.addContent(new CDATA("image"));
+        xml.addContent(msgType);
+        //5、消息类型MsgType
+        Element image = new Element("Image");
+        msgType.addContent(new CDATA("image"));
+        xml.addContent(image);
+
         Map<String,Object> textMap = new HashMap<>();
         textMap.put("media_id", getMediaId(fileName));
         Map<String,Object> sendMap = new HashMap<>();
-        sendMap.put("touser",FromUserName);
+        sendMap.put("touser",element.getChildText("FromUserName"));
         sendMap.put("msgtype","image");
         sendMap.put("image",textMap);
         JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
@@ -108,23 +135,48 @@ public class CustomerUtil {
     /**
      * 发送文字客服消息
      */
-    public static ResponseEntity<String> sendText(String FromUserName,String content)  {
-        Map<String,Object> textMap = new HashMap<>();
-        textMap.put("content", content);
-        Map<String,Object> sendMap = new HashMap<>();
-        sendMap.put("touser",FromUserName);
-        sendMap.put("msgtype","text");
-        sendMap.put("text",textMap);
-        JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
+    public static ResponseEntity<String> sendText(Element element,String content)  {
+        String resultStr = "";
+
+        Element xml = new Element("xml");
+        //2、一个ToUserName节点,以及节点内容,openID
+        Element toUserName = new Element("ToUserName");
+        toUserName.addContent(new CDATA(element.getChildText("FromUserName")));
+        xml.addContent(toUserName);
+        //3、FromUserName，开发者微信号
+        Element fromUserName  = new Element("FromUserName");
+        fromUserName.addContent(new CDATA(element.getChildText("ToUserName")));
+        xml.addContent(toUserName);
+        //4、CreateTime消息创建时间
+        Element createTime = new Element("CreateTime");
+        createTime.addContent(System.currentTimeMillis() / 1000 + "");
+        xml.addContent(createTime);
+        //5、消息类型MsgType
+        Element msgType = new Element("MsgType");
+        msgType.addContent(new CDATA("text"));
+        xml.addContent(msgType);
+        //5、消息类型MsgType
+        Element Content = new Element("Content");
+        msgType.addContent(new CDATA(content));
+        xml.addContent(Content);
+
+        try {
+            //xml格式化成字符串
+            Format format = Format.getCompactFormat();
+            format.setEncoding("utf-8"); //设置格式化的字符集
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            XMLOutputter xmlOutputter = new XMLOutputter();
+            xmlOutputter.output(xml, byteArrayOutputStream);
+            resultStr = byteArrayOutputStream.toString("utf-8");
+            //把节点Element，转换成一个字符串
+            System.out.println("---------"+resultStr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().set(1,new StringHttpMessageConverter(StandardCharsets.UTF_8));
-//        MediaType type = MediaType.parseMediaType("application/json;charset=UTF-8");
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(type);
-//        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
-
-        return restTemplate.postForEntity(send_url+getToken(),jsonData.toString(),String.class);
+        return restTemplate.postForEntity(send_url+getToken(),resultStr,String.class);
     }
 
     /**

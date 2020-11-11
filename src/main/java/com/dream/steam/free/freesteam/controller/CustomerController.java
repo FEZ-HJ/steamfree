@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.dream.steam.free.freesteam.utils.CustomerUtil;
 import com.dream.steam.free.freesteam.utils.Sha1Util;
 import org.apache.commons.lang3.StringUtils;
+import org.jdom.CDATA;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -90,8 +91,8 @@ public class CustomerController {
             System.out.println("+++++++++" + rootElement.getChildText("Content"));
             //回复 1 ，发送公众号二维码
             if("1".equals(rootElement.getChildText("Content"))){
-                CustomerUtil.sendImage(rootElement.getChildText("FromUserName"),"1.jpg");
-                CustomerUtil.sendText(rootElement.getChildText("FromUserName"),"长按识别二维码关注【steam限免助手】公众号！");
+                CustomerUtil.sendImage(rootElement,"1.jpg");
+                CustomerUtil.sendText(rootElement,"长按识别二维码关注【steam限免助手】公众号！");
             }else{
                 return CustomerUtil.sendService(rootElement);
             }
@@ -100,21 +101,6 @@ public class CustomerController {
     }
 
     public static void main(String[] args) throws JDOMException, IOException {
-        String s = "<xml><ToUserName><![CDATA[gh_725c76a4d73a]]></ToUserName><FromUserName><![CDATA[oKqq9wEDDUjTkJgqipWd0IFwi8yI]]></FromUserName></xml>";
-        SAXBuilder builder = new SAXBuilder();
-        StringReader sr = new StringReader(s);
-        Document document = new Document();
-        try{
-            document = builder.build(sr);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        Element foo = document.getRootElement();
-        System.out.println(foo.getChildText("ToUserName"));
-        List list = foo.getChildren();
-        for(int i = 0 ; i < list.size(); i++){
-            Element element = (Element) list.get(i);
-            System.out.println(element.getChildText("ToUserName"));
-        }
+
     }
 }
