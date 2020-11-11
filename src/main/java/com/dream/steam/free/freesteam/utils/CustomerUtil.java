@@ -137,7 +137,6 @@ public class CustomerUtil {
      */
     public static ResponseEntity<String> sendText(Element element,String content)  {
         String resultStr = "";
-
         Element xml = new Element("xml");
         //2、一个ToUserName节点,以及节点内容,openID
         Element toUserName = new Element("ToUserName");
@@ -146,7 +145,7 @@ public class CustomerUtil {
         //3、FromUserName，开发者微信号
         Element fromUserName  = new Element("FromUserName");
         fromUserName.addContent(new CDATA(element.getChildText("ToUserName")));
-        xml.addContent(toUserName);
+        xml.addContent(fromUserName);
         //4、CreateTime消息创建时间
         Element createTime = new Element("CreateTime");
         createTime.addContent(System.currentTimeMillis() / 1000 + "");
