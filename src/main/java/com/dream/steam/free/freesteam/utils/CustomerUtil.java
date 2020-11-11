@@ -3,6 +3,7 @@ package com.dream.steam.free.freesteam.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.jdom.Element;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -129,11 +130,11 @@ public class CustomerUtil {
     /**
      * 转到人工客服
      */
-    public static String sendService(JSONObject jsonObject) {
+    public static String sendService(Element element) {
         Map<String,Object> sendMap = new HashMap<>();
-        sendMap.put("ToUserName",jsonObject.getString("FromUserName"));
-        sendMap.put("FromUserName",jsonObject.getString("ToUserName"));
-        sendMap.put("CreateTime",jsonObject.getString("CreateTime"));
+        sendMap.put("ToUserName",element.getChildText("FromUserName"));
+        sendMap.put("FromUserName",element.getChildText("ToUserName"));
+        sendMap.put("CreateTime",element.getChildText("CreateTime"));
         sendMap.put("MsgType","transfer_customer_service");
         return JSON.toJSONString(sendMap);
     }

@@ -85,25 +85,15 @@ public class CustomerController {
         ServletInputStream stream = request.getInputStream();
         Document document = new SAXBuilder().build(stream);
         Element rootElement = document.getRootElement();
-        rootElement.getChildText("MsgType");
-//        System.out.println(rootElement.getChildText("MsgType"));
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-//        StringBuilder stringBuffer = new StringBuilder();
-//        String line;
-//        while ((line = reader.readLine()) != null){
-//            stringBuffer.append(line);
-//        }
-//        System.out.println("+++++++++++"+stringBuffer.toString());
-//        JSONObject jsonObject = JSONObject.parseObject(stringBuffer.toString());
-//        System.out.println("+++++++++++"+jsonObject.toString());
+        System.out.println("+++++++++" + rootElement.getChildText("MsgType"));
         if(rootElement.getChildText("MsgType").equals("text")){
-            Map<String,Object> textMap = new HashMap<>();
+            System.out.println("+++++++++" + rootElement.getChildText("Content"));
             //回复 1 ，发送公众号二维码
             if("1".equals(rootElement.getChildText("Content"))){
-//                CustomerUtil.sendImage(jsonObject,"1.jpg");
+                CustomerUtil.sendImage(rootElement.getChildText("FromUserName"),"1.jpg");
                 CustomerUtil.sendText(rootElement.getChildText("FromUserName"),"长按识别二维码关注【steam限免助手】公众号！");
             }else{
-//                return CustomerUtil.sendService(jsonObject);
+                return CustomerUtil.sendService(rootElement);
             }
         }
         return "success";
