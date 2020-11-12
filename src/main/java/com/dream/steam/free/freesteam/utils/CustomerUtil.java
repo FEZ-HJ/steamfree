@@ -7,6 +7,8 @@ import org.jdom.CDATA;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +34,8 @@ import java.util.Map;
  */
 public class CustomerUtil {
 
+    public static Logger logger = LoggerFactory.getLogger(CustomerUtil.class);
+
     public static LocalCache localCache = new LocalCache();
 
     //客服消息推送地址
@@ -49,6 +53,7 @@ public class CustomerUtil {
             String forObject = restTemplate.getForObject(token_url,String.class);
             JSONObject jsonObject = JSONObject.parseObject(forObject);
             String wxkf_token = String.valueOf(jsonObject.get("access_token"));
+            logger.info("获取token成功：" + wxkf_token);
             localCache.set("wxkf_token",wxkf_token,2*60*60*1000);
             value = localCache.get("wxkf_token");
         }
@@ -78,6 +83,7 @@ public class CustomerUtil {
 
         String forObject = restTemplate.postForObject(upload_url+getToken(),files,String.class);
         JSONObject jsonObject = JSONObject.parseObject(forObject);
+        logger.info("上传Media成功：" + jsonObject.toString());
         return String.valueOf(jsonObject.get("media_id"));
     }
 
@@ -91,6 +97,7 @@ public class CustomerUtil {
             String mediaId = uploadTempMedia(filePath,name);
             localCache.set(name,mediaId,3*24*60*60*1000);
             value = localCache.get(name);
+            logger.info("获取MediaID成功：" + value);
         }
         return value.toString();
     }
@@ -182,7 +189,7 @@ public class CustomerUtil {
             xmlOutputter.output(xml, byteArrayOutputStream);
             resultStr = byteArrayOutputStream.toString("utf-8");
             //把节点Element，转换成一个字符串
-            System.out.println("---------"+resultStr);
+            logger.info("拼接返回XML字符串成功：" + resultStr);
         } catch (IOException e) {
             e.printStackTrace();
         }
