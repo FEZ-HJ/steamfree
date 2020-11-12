@@ -51,6 +51,7 @@ public class CustomerUtil {
         if(value == null){
             RestTemplate restTemplate = new RestTemplate();
             String forObject = restTemplate.getForObject(token_url,String.class);
+            logger.info("获取token成功：" + forObject);
             JSONObject jsonObject = JSONObject.parseObject(forObject);
             String wxkf_token = String.valueOf(jsonObject.get("access_token"));
             logger.info("获取token成功：" + wxkf_token);
@@ -137,7 +138,6 @@ public class CustomerUtil {
      * 发送文字客服消息
      */
     public static String sendTextXML(Element element,String content)  {
-        String resultStr = "";
         Element xml = new Element("xml");
         //2、一个ToUserName节点,以及节点内容,openID
         Element toUserName = new Element("ToUserName");
