@@ -135,7 +135,7 @@ public class CustomerUtil {
     /**
      * 发送文字客服消息
      */
-    public static String sendText(Element element,String content)  {
+    public static String sendTextXML(Element element,String content)  {
         String resultStr = "";
         Element xml = new Element("xml");
         //2、一个ToUserName节点,以及节点内容,openID

@@ -92,7 +92,7 @@ public class CustomerController {
                 PrintWriter out = null;
                 try{
                     out = response.getWriter();
-                    out.print(CustomerUtil.sendText(rootElement,"长按识别二维码关注【steam限免助手】公众号！"));
+                    out.print(CustomerUtil.sendTextXML(rootElement,"长按识别二维码关注【steam限免助手】公众号！"));
                 }catch (Exception e){
 
                 }finally {
