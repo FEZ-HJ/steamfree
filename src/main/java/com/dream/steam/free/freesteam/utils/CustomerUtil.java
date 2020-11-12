@@ -98,7 +98,7 @@ public class CustomerUtil {
     /**
      * 发送图片客服消息
      */
-    public static ResponseEntity<String> sendImage(Element element,String fileName) throws FileNotFoundException {
+    public static String sendImageXml(Element element,String fileName) throws FileNotFoundException {
         Element xml = new Element("xml");
         //2、一个ToUserName节点,以及节点内容,openID
         Element toUserName = new Element("ToUserName");
@@ -118,18 +118,12 @@ public class CustomerUtil {
         xml.addContent(msgType);
         //5、消息类型MsgType
         Element image = new Element("Image");
-        msgType.addContent(new CDATA("image"));
+        Element media = new Element("MediaId");
+        media.addContent(new CDATA(getMediaId(fileName)));
+        image.addContent(media);
         xml.addContent(image);
 
-        Map<String,Object> textMap = new HashMap<>();
-        textMap.put("media_id", getMediaId(fileName));
-        Map<String,Object> sendMap = new HashMap<>();
-        sendMap.put("touser",element.getChildText("FromUserName"));
-        sendMap.put("msgtype","image");
-        sendMap.put("image",textMap);
-        JSONObject jsonData = JSONObject.parseObject(JSON.toJSONString(sendMap));
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForEntity(send_url+getToken(),jsonData.toString(),String.class);
+        return xmlTOstring(xml);
     }
 
     /**
@@ -159,6 +153,26 @@ public class CustomerUtil {
         Content.addContent(new CDATA(content));
         xml.addContent(Content);
 
+//        RestTemplate restTemplate = new RestTemplate();
+//        restTemplate.getMessageConverters().set(1,new StringHttpMessageConverter(StandardCharsets.UTF_8));
+//        return restTemplate.postForEntity(send_url+getToken(),resultStr,String.class);
+        return xmlTOstring(xml);
+    }
+
+    /**
+     * 转到人工客服
+     */
+    public static String sendService(Element element) {
+        Map<String,Object> sendMap = new HashMap<>();
+        sendMap.put("ToUserName",element.getChildText("FromUserName"));
+        sendMap.put("FromUserName",element.getChildText("ToUserName"));
+        sendMap.put("CreateTime",element.getChildText("CreateTime"));
+        sendMap.put("MsgType","transfer_customer_service");
+        return JSON.toJSONString(sendMap);
+    }
+
+    public static String xmlTOstring(Element xml){
+        String resultStr = "";
         try {
             //xml格式化成字符串
             Format format = Format.getCompactFormat();
@@ -172,23 +186,7 @@ public class CustomerUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-//        RestTemplate restTemplate = new RestTemplate();
-//        restTemplate.getMessageConverters().set(1,new StringHttpMessageConverter(StandardCharsets.UTF_8));
-//        return restTemplate.postForEntity(send_url+getToken(),resultStr,String.class);
         return resultStr;
-    }
-
-    /**
-     * 转到人工客服
-     */
-    public static String sendService(Element element) {
-        Map<String,Object> sendMap = new HashMap<>();
-        sendMap.put("ToUserName",element.getChildText("FromUserName"));
-        sendMap.put("FromUserName",element.getChildText("ToUserName"));
-        sendMap.put("CreateTime",element.getChildText("CreateTime"));
-        sendMap.put("MsgType","transfer_customer_service");
-        return JSON.toJSONString(sendMap);
     }
 
 }

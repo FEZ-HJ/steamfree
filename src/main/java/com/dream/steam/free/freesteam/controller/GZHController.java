@@ -5,6 +5,7 @@ import com.dream.steam.free.freesteam.utils.Sha1Util;
 import org.apache.commons.lang3.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
@@ -62,7 +64,7 @@ public class GZHController {
     }
 
     @PostMapping("/gzh")
-    public String miniProgram(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public String miniProgram(HttpServletRequest request, HttpServletResponse response) throws IOException, JDOMException {
         response.setCharacterEncoding("utf-8");
         ServletInputStream stream = request.getInputStream();
         Document document = new SAXBuilder().build(stream);
@@ -70,15 +72,17 @@ public class GZHController {
         if(rootElement.getChildText("MsgType").equals("text")){
             //回复 1 ，发送公众号二维码
             if("1".equals(rootElement.getChildText("Content"))){
-//                CustomerUtil.sendImage(rootElement,"1.jpg");
                 PrintWriter out = null;
                 try{
                     out = response.getWriter();
-                    out.print(CustomerUtil.sendTextXML(rootElement,"长按识别二维码关注【steam限免助手】公众号！")+CustomerUtil.sendTextXML(rootElement,"长按识别二维码关注【steam限免助手】公众号！"));
+//                    out.print(CustomerUtil.sendTextXML(rootElement,"长按识别二维码关注【steam限免助手】公众号！")+CustomerUtil.sendTextXML(rootElement,"长按识别二维码关注【steam限免助手】公众号！"));
+                    out.print(CustomerUtil.sendImageXml(rootElement,"1.jpg"));
                 }catch (Exception e){
-
+                    e.printStackTrace();
                 }finally {
-                    out.close();
+                    if (out != null) {
+                        out.close();
+                    }
                 }
             }else{
                 return CustomerUtil.sendService(rootElement);
